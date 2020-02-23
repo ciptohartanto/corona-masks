@@ -3,6 +3,7 @@
 	l-map(
 		@update:zoom="updateZoom"
 		@update:center="updateCenter"
+
 		:zoom="zoom"
 		:center="center"
 		style="width: 100%; height: 100vh;")
@@ -52,7 +53,7 @@ export default {
       center: L.latLng(25.054968, 121.537027),
 
       url:
-        "https://api.maptiler.com/maps/voyager/{z}/{x}/{y}.png?key=zmkE5RpWXjHTJzZ13b9T",
+        "https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}@2x.png?key=9oeahMFWIODM5nvypMGz",
       attribution:
         '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
       marker: L.latLng(25.04776, 121.53185)

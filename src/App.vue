@@ -1,17 +1,20 @@
 <template lang='pug'>
   #app
-    //- input(placeholder="Keyword" v-model="keyword")
-    //- button(@click="showArea") Click
-    //- button(@click="getCurrentPosition") My Position
-
     leaflet-map(
       :locations="this.newArr"
+      :zoom="this.current.center"
     )
-    bottom-bar
+    bottom-bar(
+      :locations="this.newArr"
+      @gotKeyword="setNewKeyword"
+      @gotCurrentPosition="setCurrentPosition"
+    )
 </template>
 
 <script>
 import axios from "axios";
+import L from "leaflet";
+
 import LeafletMap from "./components/LeafletMap";
 import BottomBar from "./components/BottomBar";
 
@@ -25,7 +28,10 @@ export default {
     return {
       locations: [],
       keyword: "",
-      newArr: []
+      newArr: [],
+      current: {
+        center: {}
+      }
     };
   },
   created() {
@@ -47,21 +53,21 @@ export default {
       });
       this.newArr = newArr;
     },
-    getCurrentPosition() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(pos => {
-          this.current.long = pos.coords.longitude;
-          this.current.lat = pos.coords.latitude;
-        });
-      }
-    },
-
     getZhongshan() {
       const locations = this.locations;
       const newArr = locations.filter(location => {
         return location.properties.address.includes("中山區");
       });
       this.newArr = newArr;
+    },
+    setNewKeyword(keyword) {
+      this.keyword = keyword;
+      this.showArea();
+    },
+    setCurrentPosition(position) {
+      this.current.long = position[0];
+      this.current.lat = position[1];
+      this.current.center = L.latLng(position[0], position[1]);
     }
   }
 };
@@ -76,6 +82,10 @@ export default {
 body
   margin: 0
   padding: 0
+li
+  list-style: none
 #mapid
   height: 100%
+
+
 </style>

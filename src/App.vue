@@ -1,49 +1,70 @@
 <template lang='pug'>
   #app
-    input(placeholder="Keyword" v-model="keyword")
-    button(@click="showArea") Click
-    #mapid
-      l-map
-        l-tile-layer(url="https://api.maptiler.com/maps/hybrid/tiles.json?key=zmkE5RpWXjHTJzZ13b9T" attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>')
-        l-marker(lat-lng="[23.840123, 120.963436]" :icon="icon")
-      
-    
+    //- input(placeholder="Keyword" v-model="keyword")
+    //- button(@click="showArea") Click
+    //- button(@click="getCurrentPosition") My Position
+
+    leaflet-map(
+      :locations="this.newArr"
+    )
+    bottom-bar
 </template>
 
 <script>
-import axios from 'axios'
-import {LMap, LTileLayer, LMarker} from 'vue2-leaflet'
+import axios from "axios";
+import LeafletMap from "./components/LeafletMap";
+import BottomBar from "./components/BottomBar";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    LMap,
-    LTileLayer,
-    LMarker
+    LeafletMap,
+    BottomBar
   },
-  data(){
+  data() {
     return {
       locations: [],
-      keyword: '',
+      keyword: "",
       newArr: []
-    }
+    };
   },
   created() {
-    axios.get('https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json')
-      .then(res=> this.locations = res.data.features )
+    axios
+      .get(
+        "https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json"
+      )
+      .then(res => {
+        this.locations = res.data.features;
+        this.getZhongshan();
+      });
   },
   methods: {
     showArea() {
-      const locations = this.locations
-      const keyword = this.keyword
+      const locations = this.locations;
+      const keyword = this.keyword;
       const newArr = locations.filter(location => {
-        return location.properties.address.includes(keyword)
-      })
-      this.newArr = newArr
+        return location.properties.address.includes(keyword);
+      });
+      this.newArr = newArr;
+    },
+    getCurrentPosition() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          this.current.long = pos.coords.longitude;
+          this.current.lat = pos.coords.latitude;
+        });
+      }
+    },
+
+    getZhongshan() {
+      const locations = this.locations;
+      const newArr = locations.filter(location => {
+        return location.properties.address.includes("中山區");
+      });
+      this.newArr = newArr;
     }
   }
-  
-}
+};
 </script>
 
 <style lang='sass'>
@@ -52,10 +73,9 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
-  text-align: center
-  color: #2c3e50
-  margin-top: 60px
-  
+body
+  margin: 0
+  padding: 0
 #mapid
   height: 100%
 </style>

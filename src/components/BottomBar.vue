@@ -3,7 +3,7 @@
 		.bottomBar-left
 			input(placeholder="Keyword" v-model="keyword")
 			button(@click="getKeyword") Click
-			button(@click="getCurrentPosition") My Position
+			button(@click="getUserPosition") My Position
 		.bottomBar-right
 			ul.bottomBar-list
 				li.bottomBar-item(
@@ -42,14 +42,14 @@ export default {
     getKeyword() {
       this.$emit("gotKeyword", this.keyword);
     },
-    getCurrentPosition() {
+    getUserPosition() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(pos => {
           this.current.long = pos.coords.longitude;
           this.current.lat = pos.coords.latitude;
         });
       }
-      this.$emit("gotCurrentPosition", [this.current.long, this.current.lat]);
+      this.$emit("emitUserPosition", [this.current.long, this.current.lat]);
     }
   }
 };

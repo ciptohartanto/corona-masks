@@ -20,21 +20,33 @@
 		//- 		:icon-url='icon'
 		//- 		:icon-size='iconBig'
 		//- 		)
-		l-marker(
-			v-for="(location, index) in locations"
-			:key="index"
-			:lat-lng="getLatLong(location.geometry.coordinates[1], location.geometry.coordinates[0])"
-			@click=" getMarkerIndex(index)"
-			)
-			l-icon(
-				:icon-url='icon'
-				:icon-size="iconSize"
+		v-marker-cluster(:options='clusterOptions')
+			l-marker(
+				v-for="(location, index) in locations"
+				:key="index"
+				:lat-lng="getLatLong(location.geometry.coordinates[1], location.geometry.coordinates[0])"
+				@click=" getMarkerIndex(index)"
 				)
+				l-popup
+					address.popup-address
+						span.popup-addressTitle {{location.properties.name}}
+						.popup-stackUp
+							span.popup-addressSubtitle {{location.properties.address}}
+							span.popup-addressSubtitle {{location.properties.phone}}
+							
+						.popup-stackOn
+							span.popup-addressCaption {{location.properties.mask_adult}}
+							span.popup-addressCaption {{location.properties.mask_child}}
+				l-icon(
+					:icon-url='icon'
+					:icon-size="iconSize"
+					)
 </template>
 
 <script>
 import L from "leaflet";
-import { LMap, LTileLayer, LMarker, LIcon } from "vue2-leaflet";
+import { LMap, LTileLayer, LMarker, LIcon, LPopup } from "vue2-leaflet";
+import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 import { Icon } from "leaflet";
 import pin from "./../assets/marker.png";
 delete Icon.Default.prototype._getIconUrl;
@@ -44,6 +56,7 @@ Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png")
 });
 
+
 export default {
   name: "LeafletMap",
   components: {
@@ -51,7 +64,9 @@ export default {
     LTileLayer,
     LMarker,
     LIcon,
-    L
+    L,
+		'v-marker-cluster': Vue2LeafletMarkerCluster,
+		LPopup
   },
   props: {
     locations: {
@@ -88,7 +103,10 @@ export default {
       marker: L.latLng(25.04776, 121.53185),
       icon: pin,
       iconSize: [35, 35],
-      iconBig: [100, 100]
+      iconBig: [100, 100],
+      clusterOptions: {
+        disableClusteringAtZoom: 16,
+      },
     };
   },
   methods: {
@@ -106,13 +124,42 @@ export default {
     },
     updateCenter(center) {
       this.$emit("updateNewCenter", center);
-    }
-  }
+		}
+	},
+	computed: {
+			popupContent(){
+			const popupContent = `
+				<h1> address: ${this.location.properties.mask_adult} </h1>
+				<h2> mask for children: ${this.location.properties.mask_child} </h2>
+			`
+			return popupContent
+		}
+	}
 };
 </script>
 
 <style lang="sass">
+@import "~leaflet.markercluster/dist/MarkerCluster.css";
+@import "~leaflet.markercluster/dist/MarkerCluster.Default.css";
 .icon--big
 	width: 75px
 	height: 75px
+	
+
+.popup
+	&-address
+		font-style: normal
+	&-addressTitle
+		font-size: 18px
+		font-weight: bold
+	&-addressSubtitle
+		font-size: 14px
+		
+		
+		
+// resetting UI
+.leaflet-popup-content-wrapper
+	border-radius: 0 !important
+.leaflet-popup
+	bottom: 10px !important
 </style>

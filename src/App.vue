@@ -12,8 +12,8 @@
       :userLong='userPos.long'
 
     )
-    bottom-bar(
-      :locations="this.newArr"
+    top-bar(
+      :locations="newArr"
       @gotKeyword="setNewKeyword"
       @emitUserPosition="setUserPosition"
     )
@@ -24,13 +24,13 @@ import axios from "axios";
 import L from "leaflet";
 
 import LeafletMap from "./components/LeafletMap";
-import BottomBar from "./components/BottomBar";
+import TopBar from "./components/TopBar";
 
 export default {
   name: "App",
   components: {
     LeafletMap,
-    BottomBar
+    TopBar
   },
   data() {
     return {
@@ -39,7 +39,7 @@ export default {
       newArr: [],
       current: {
         center: L.latLng(25.054968, 121.537027),
-        zoom: 13
+        zoom: 15
       },
       user: false,
       userPos: {
@@ -54,8 +54,8 @@ export default {
         "https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json"
       )
       .then(res => {
-        const data = res.data.features;
-        this.locations = data;
+        const allLocations = res.data.features;
+        this.locations = allLocations;
         this.getZhongshan();
       });
   },
@@ -71,9 +71,15 @@ export default {
     },
     getZhongshan() {
       const locations = this.locations;
+      const filters = {
+        address_city: '台北市',
+        address_area: '中山區'
+      }
       const newArr = locations.filter(location => {
-        return location.properties.address.includes("中山區");
+        return location.properties.address.includes(filters.address_city+filters.address_area)
+       
       });
+      console.log(newArr)
       this.newArr = newArr;
     },
     setNewKeyword(keyword) {

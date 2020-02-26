@@ -1,19 +1,22 @@
 <template lang="pug">
 	.bottomBar
 		.bottomBar-left
+			h1 {{message}}
+
+
 			input(placeholder="Keyword" v-model="keyword")
 			button(@click="getKeyword") Click
 			button(@click="getUserPosition") My Position
-		.bottomBar-right
-			ul.bottomBar-list
-				li.bottomBar-item(
-						v-for="(location, index) in locations"
-				)
-					span {{location.properties.name}}
-					span {{location.properties.address}}
-					span {{location.properties.phone}}
-					span adult: {{location.properties.mask_adult}}
-					span child: {{location.properties.mask_child}}
+		//- .bottomBar-right
+		//- 	ul.bottomBar-list
+		//- 		li.bottomBar-item(
+		//- 				v-for="(location, index) in locations"
+		//- 		)
+		//- 			span {{location.properties.name}}
+		//- 			span {{location.properties.address}}
+		//- 			span {{location.properties.phone}}
+		//- 			span adult: {{location.properties.mask_adult}}
+		//- 			span child: {{location.properties.mask_child}}
 
 
 
@@ -22,12 +25,16 @@
 
 <script>
 export default {
-  name: "BottomBar",
+  name: "TopBar",
   props: {
     locations: {
       type: Array,
       default: () => []
-    }
+		},
+		message: {
+			type: String,
+			default: () => ''
+		}
   },
   data() {
     return {
@@ -58,12 +65,13 @@ export default {
 <style lang="sass">
 .bottomBar
 	position: fixed
-	left: 0
-	right: 0
-	bottom: 0
+	left: 10%
+	right: 10%
+	top: 0
 	height: 150px
-	background-color: red
+	background-color: white
+  box-shadow: 2px 0 3px rgba(black,.4)
 	z-index: 1000
 	&-item
-		color: white
+		color: black
 </style>

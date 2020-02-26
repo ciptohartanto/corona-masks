@@ -6,17 +6,17 @@
       :zoom="current.zoom"
       @markerIndex="setMarkerIndex"
       @updateNewZoom="setNewZoom"
-      @updateNewCenter="setNewCenter"
+
       :isUser='user'
       :userLat='userPos.lat'
       :userLong='userPos.long'
 
     )
-    top-bar(
-      :locations="newArr"
-      @gotKeyword="setNewKeyword"
-      @emitUserPosition="setUserPosition"
-    )
+    //- top-bar(
+    //-   :locations="newArr"
+    //-   @gotKeyword="setNewKeyword"
+    //-   @emitUserPosition="setUserPosition"
+    //- )
 </template>
 
 <script>
@@ -79,7 +79,6 @@ export default {
         return location.properties.address.includes(filters.address_city+filters.address_area)
        
       });
-      console.log(newArr)
       this.newArr = newArr;
     },
     setNewKeyword(keyword) {
@@ -97,14 +96,17 @@ export default {
     setMarkerIndex(index) {
       const lat = this.newArr[index].geometry.coordinates[1];
       const long = this.newArr[index].geometry.coordinates[0];
+      console.log(index)
+      console.log('from app: ' + lat,long)
       this.current.center = L.latLng(lat, long);
-      this.current.zoom = 18;
+      // this.current.zoom = 17; // problematic
     },
     setNewZoom(zoom) {
       this.current.zoom = zoom;
     },
     setNewCenter(center) {
       this.current.center = center;
+      console.log('current center: '+ this.current.center)
     }
   }
 };

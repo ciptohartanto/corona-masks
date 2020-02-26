@@ -1,5 +1,7 @@
 <template lang="pug">
 #mapid
+	h1 center {{center}}
+	//- h2 marker: {{marker}}
 	l-map(
 		@update:center="updateCenter"
 		@update:zoom='updateZoom'
@@ -30,7 +32,7 @@
 				l-popup
 					address.popup-address
 						span.popup-addressTitle {{location.properties.name}}
-						.popup-stackUp
+						.popup-stackU
 							span.popup-addressSubtitle {{location.properties.address}}
 							span.popup-addressSubtitle {{location.properties.phone}}
 							
@@ -100,12 +102,12 @@ export default {
         "https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}@2x.png?key=9oeahMFWIODM5nvypMGz",
       attribution:
         '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
-      marker: L.latLng(25.04776, 121.53185),
+
       icon: pin,
       iconSize: [35, 35],
       iconBig: [100, 100],
       clusterOptions: {
-        disableClusteringAtZoom: 16,
+        disableClusteringAtZoom: 17,
       },
     };
   },
@@ -120,10 +122,12 @@ export default {
       this.$emit("markerIndex", index);
     },
     updateZoom(zoom) {
-      this.$emit("updateNewZoom", zoom);
+			this.$emit("updateNewZoom", zoom);
+			console.log('from leafletMap zoom: ' + zoom)
     },
     updateCenter(center) {
-      this.$emit("updateNewCenter", center);
+			this.$emit("updateNewCenter", center);
+			console.log('from leafletMap center: ' + center)
 		}
 	},
 	computed: {

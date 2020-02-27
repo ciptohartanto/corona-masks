@@ -1,22 +1,18 @@
 <template lang="pug">
-	.bottomBar
-		.bottomBar-left
-			h1 {{message}}
-
-
-			input(placeholder="Keyword" v-model="keyword")
+	.topBar
+		.topBar-left
+			h1 {{translate.message}}
+			input.topBar-input(:placeholder="translate.inputPlaceholder" v-model="keyword")
 			button(@click="getKeyword") Click
-			button(@click="getUserPosition") My Position
-		//- .bottomBar-right
-		//- 	ul.bottomBar-list
-		//- 		li.bottomBar-item(
-		//- 				v-for="(location, index) in locations"
-		//- 		)
-		//- 			span {{location.properties.name}}
-		//- 			span {{location.properties.address}}
-		//- 			span {{location.properties.phone}}
-		//- 			span adult: {{location.properties.mask_adult}}
-		//- 			span child: {{location.properties.mask_child}}
+			select(v-model="selectedCounty" @change="getSelectedCounty")
+				option(default selected disabled value='') {{translate.selectCounty}}
+				option(v-for="(data, index) in countyData" :value="data" :key="index") {{data}}
+			select(v-model="selectedTown" @change="getSelectedTown")
+				option(default selected disabled value='') {{translate.selectTown}}
+				option(v-for="(data, index) in townData" :value="data" :key="index") {{data}}
+
+			//- button(@click="getUserPosition") My Position
+
 
 
 
@@ -34,7 +30,16 @@ export default {
 		message: {
 			type: String,
 			default: () => ''
-		}
+    },
+    countyData: {
+      type: Array,
+      default: () => []
+		},
+		townData: {
+      type: Array,
+      default: () => []
+		},
+
   },
   data() {
     return {
@@ -42,28 +47,45 @@ export default {
       current: {
         long: null,
         lat: null
-      }
+			},
+			selectedCounty: '臺北市',
+			selectedTown: '內湖區',
+			translate: {
+				selectTown: '地區',
+				selectCounty: '城市',
+				inputPlaceholder: '地址',
+				message: 'hi!'
+			}
     };
-  },
+	},
+
   methods: {
     getKeyword() {
       this.$emit("gotKeyword", this.keyword);
-    },
-    getUserPosition() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(pos => {
-          this.current.long = pos.coords.longitude;
-          this.current.lat = pos.coords.latitude;
-        });
-      }
-      this.$emit("emitUserPosition", [this.current.long, this.current.lat]);
-    }
+		},
+		getSelectedCounty(){
+			this.keyword = ''
+			this.$emit('gotSelectedCounty', this.selectedCounty)
+		},
+		getSelectedTown(){
+			this.keyword = ''
+			this.$emit('gotSelectedTown', this.selectedTown)
+		}
+    // getUserPosition() {
+    //   if (navigator.geolocation) {
+    //     navigator.geolocation.getCurrentPosition(pos => {
+    //       this.current.long = pos.coords.longitude;
+    //       this.current.lat = pos.coords.latitude;
+    //     });
+    //   }
+    //   this.$emit("emitUserPosition", [this.current.long, this.current.lat]);
+    // }
   }
 };
 </script>
 
 <style lang="sass">
-.bottomBar
+.topBar
 	position: fixed
 	left: 10%
 	right: 10%

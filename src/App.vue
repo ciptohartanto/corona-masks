@@ -12,11 +12,15 @@
       :userLong='userPos.long'
 
     )
-    //- top-bar(
-    //-   :locations="newArr"
-    //-   @gotKeyword="setNewKeyword"
-    //-   @emitUserPosition="setUserPosition"
-    //- )
+    top-bar(
+      :locations="newArr"
+      @gotKeyword="goToNewArea"
+      :countyData='countyList'
+      :townData='townList'
+      :selectedCounty="selectedCounty"
+      @gotSelectedCounty="setSelectedCounty"
+      @gotSelectedTown="setSelectedTown"
+    )
 </template>
 
 <script>
@@ -45,7 +49,12 @@ export default {
       userPos: {
         lat: null,
         long: null
-      }
+      },
+      countyList: [],
+      townList: [],
+      selectedCounty: '臺北市',
+      selectedTown: '內湖區'
+      
     };
   },
   created() {
@@ -56,48 +65,54 @@ export default {
       .then(res => {
         const allLocations = res.data.features;
         this.locations = allLocations;
-        this.getZhongshan();
+        this.extractCounties();
+        this.extractTown();
+        this.getTheVeryLocation();
+        this.setMarkerIndex(1)
       });
   },
   methods: {
-    showArea() {
+    newAreaFromKeyword() {
       const locations = this.locations;
       const keyword = this.keyword;
+      const replaceTai = this.selectedCounty.replace('臺', '台')
+      const selectedTown = this.selectedTown
+      const combinedKeywords = replaceTai + selectedTown
       let newArr = locations.filter(location => {
-        return location.properties.address.includes(keyword);
-      });
+        if(keyword !== '') {
+          return location.properties.address.includes(keyword);
+        } else {
 
+          return location.properties.address.includes(combinedKeywords);
+        }
+      });
       this.newArr = newArr;
     },
-    getZhongshan() {
+    goToNewCenter() {
+      const firstLat = this.newArr[0].geometry.coordinates[1];
+      const firstLong = this.newArr[0].geometry.coordinates[0];
+      this.current.center = L.latLng(firstLat,firstLong)
+    },
+    getTheVeryLocation() {
       const locations = this.locations;
-      const filters = {
-        address_city: '台北市',
-        address_area: '中山區'
-      }
+      const replaceTai = this.selectedCounty.replace('臺', '台')
+      const selectedTown = this.selectedTown
+      const combinedKeywords = replaceTai + selectedTown
       const newArr = locations.filter(location => {
-        return location.properties.address.includes(filters.address_city+filters.address_area)
-       
+        return location.properties.address.includes(combinedKeywords)
       });
+
       this.newArr = newArr;
     },
-    setNewKeyword(keyword) {
+    goToNewArea(keyword) {
       this.keyword = keyword;
-      this.showArea();
-    },
-    setUserPosition(position) {
-      this.current.center = L.latLng(position[1], position[0]);
-      this.userPos.lat = position[1];
-      this.userPos.long = position[0];
+      this.newAreaFromKeyword();
+      this.goToNewCenter();
 
-      this.current.zoom = 18;
-      this.user = true;
     },
     setMarkerIndex(index) {
       const lat = this.newArr[index].geometry.coordinates[1];
       const long = this.newArr[index].geometry.coordinates[0];
-      console.log(index)
-      console.log('from app: ' + lat,long)
       this.current.center = L.latLng(lat, long);
       // this.current.zoom = 17; // problematic
     },
@@ -106,7 +121,36 @@ export default {
     },
     setNewCenter(center) {
       this.current.center = center;
-      console.log('current center: '+ this.current.center)
+    },
+    extractCounties() {
+      const countyArr = this.locations.map(location => location.properties.county)
+      const countyList = [... new Set(countyArr)]
+      this.countyList = countyList.filter(x => x)
+
+    },
+    extractTown() {
+      const correctTownArr =
+        this.locations.map(location => {
+          if (this.selectedCounty === location.properties.county) {
+            return location.properties.town
+          }
+        })
+      const townList = [... new Set(correctTownArr)]
+      this.townList = townList.filter(x => x)
+    },
+    setSelectedCounty(val) {
+      this.selectedCounty = val
+      this.keyword = ''
+      this.selectedTown = ''
+      this.extractTown()
+      this.newAreaFromKeyword();
+      this.goToNewCenter();
+    },
+    setSelectedTown(val){
+      this.selectedTown = val
+      this.keyword = ''
+      this.newAreaFromKeyword();
+      this.goToNewCenter();
     }
   }
 };

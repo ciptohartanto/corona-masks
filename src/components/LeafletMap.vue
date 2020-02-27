@@ -1,7 +1,5 @@
 <template lang="pug">
 #mapid
-	h1 center {{center}}
-	//- h2 marker: {{marker}}
 	l-map(
 		@update:center="updateCenter"
 		@update:zoom='updateZoom'
@@ -123,11 +121,11 @@ export default {
     },
     updateZoom(zoom) {
 			this.$emit("updateNewZoom", zoom);
-			console.log('from leafletMap zoom: ' + zoom)
+
     },
     updateCenter(center) {
 			this.$emit("updateNewCenter", center);
-			console.log('from leafletMap center: ' + center)
+
 		}
 	},
 	computed: {

@@ -2,8 +2,9 @@
 	.topBar
 		.topBar-left
 			h1 {{translate.message}}
-			input.topBar-input(:placeholder="translate.inputPlaceholder" v-model="keyword")
-			button(@click="getKeyword") Click
+			.topBar-inputGroup
+				input.topBar-input(:placeholder="translate.inputPlaceholder" v-model="keyword")
+				button.topBar-button(@click="getKeyword") 搜尋
 			select(v-model="selectedCounty" @change="getSelectedCounty")
 				option(default selected disabled value='') {{translate.selectCounty}}
 				option(v-for="(data, index) in countyData" :value="data" :key="index") {{data}}
@@ -94,6 +95,30 @@ export default {
 	background-color: white
   box-shadow: 2px 0 3px rgba(black,.4)
 	z-index: 1000
+	padding: 24px
 	&-item
 		color: black
+	&-inputGroup
+		display: flex
+	&-input
+		background: rgba(grey, .3)
+		height: 32px
+		display: flex
+		justify-content: center
+		align-items: center
+		padding: 0 8px
+		width: 100%
+		&:placeholder-shown
+			& + .topBar-button
+				background-color: grey
+	&-button
+		height: 32px
+		width: 100px
+		padding: 0 24px
+		display: flex
+		justify-content: center
+		align-items: center
+		background-color: green
+		color: white
+		
 </style>

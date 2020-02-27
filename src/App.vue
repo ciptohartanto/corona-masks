@@ -167,6 +167,11 @@ body
   padding: 0
 li
   list-style: none
+input,
+select,
+option
+  appearance: none
+  border: none
 #mapid
   height: 100%
 

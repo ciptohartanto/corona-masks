@@ -30,13 +30,19 @@
 				l-popup
 					address.popup-address
 						span.popup-addressTitle {{location.properties.name}}
-						.popup-stackU
+						.popup-stackUp
 							span.popup-addressSubtitle {{location.properties.address}}
 							span.popup-addressSubtitle {{location.properties.phone}}
 							
-						.popup-stackOn
-							span.popup-addressCaption {{location.properties.mask_adult}}
-							span.popup-addressCaption {{location.properties.mask_child}}
+						.popup-mainInfo
+							.popup-wrapp
+								span.popup-addressIcon
+									include ./../assets/medical-mask.svg
+								span.popup-addressCaption 成人: {{location.properties.mask_adult}}
+							.popup-wrapp
+								span.popup-addressIcon
+									include ./../assets/mask.svg
+								span.popup-addressCaption 兒童: {{location.properties.mask_child}}
 				l-icon(
 					:icon-url='icon'
 					:icon-size="iconSize"
@@ -152,11 +158,30 @@ export default {
 	&-address
 		font-style: normal
 	&-addressTitle
-		font-size: 18px
+		font-size: 22px
+		margin-bottom: 18px
 		font-weight: bold
+		display: block
 	&-addressSubtitle
-		font-size: 14px
-		
+		font-size: 18px
+		display: block
+	&-addressIcon
+		display: flex
+		width: 24px
+		height: 24px
+		align-items: center
+		justify-content: center
+		margin-right: 8px
+	&-addressCaption
+		font-size: 16px
+		font-weight: bold
+	&-wrapp
+		display: flex
+		width: 45%
+	&-mainInfo
+		margin-top: 20px
+		display: flex
+		justify-content: space-between
 		
 		
 // resetting UI
@@ -164,4 +189,9 @@ export default {
 	border-radius: 0 !important
 .leaflet-popup
 	bottom: 10px !important
+.leaflet-popup-content
+	margin: 24px !important 
+	@media screen and (max-width: 450px)
+		width: 320px !important
+		max-width: 80% !important
 </style>

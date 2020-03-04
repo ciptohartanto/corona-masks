@@ -20,6 +20,7 @@
       :selectedCounty="selectedCounty"
       @gotSelectedCounty="setSelectedCounty"
       @gotSelectedTown="setSelectedTown"
+      @gotMaskType='setMaskType'
     )
 </template>
 
@@ -53,8 +54,8 @@ export default {
       countyList: [],
       townList: [],
       selectedCounty: '臺北市',
-      selectedTown: '內湖區'
-      
+      selectedTown: '內湖區',
+      maskType: 'allMaskTypes'
     };
   },
   created() {
@@ -80,10 +81,10 @@ export default {
       const combinedKeywords = replaceTai + selectedTown
       let newArr = locations.filter(location => {
         if(keyword !== '') {
-          return location.properties.address.includes(keyword);
+          return location.properties.address.includes(keyword) &&location.properties.mask_adult > 2 && location.properties.mask_child > 2;
         } else {
 
-          return location.properties.address.includes(combinedKeywords);
+          return location.properties.address.includes(combinedKeywords) &&location.properties.mask_adult > 2 && location.properties.mask_child > 2;
         }
       });
       this.newArr = newArr;
@@ -151,6 +152,18 @@ export default {
       this.keyword = ''
       this.newAreaFromKeyword();
       this.goToNewCenter();
+    },
+    setMaskType(val){
+      this.maskType = val
+      const newArr = this.newArr
+      const newArrMaskType = newArr.filter(location => {
+        if(this.maskType === 'allMaskTypes') {
+          return location.properties.mask_adult > 2 && location.properties.mask_child > 2
+        } else {
+          return location.properties.mask_child > 2
+        }
+      })
+     this.newArr = newArrMaskType
     }
   }
 };
@@ -162,14 +175,20 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+  margin: 0
+  padding: 0
 body
   margin: 0
   padding: 0
 li
   list-style: none
-input,
-select,
-option
+input
   appearance: none
   border: none
 #mapid

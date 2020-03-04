@@ -280,6 +280,8 @@ export default {
 		left: 30%
 		right: 30%
 		@media screen and (max-width: 767px)
+			top: auto
+			bottom: 10px
 			left: 20%
 			right: 20%
 			

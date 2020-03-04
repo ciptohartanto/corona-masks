@@ -63,7 +63,7 @@ export default {
         this.getTheVeryLocation();
         this.setMarkerIndex(1)
       });
-      document.title = "Mask Locator - Combat Coronavirus Taiwan!";
+      document.title = "Mask Locator - Combat Coronavirus, Taiwan!";
     
   },
   methods: {

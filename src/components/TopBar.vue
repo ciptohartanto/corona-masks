@@ -168,6 +168,7 @@ export default {
 		align-items: center
 		padding: 10px 8px
 		width: 100%
+		border-radius: 4px 0 0 4px
 		&:placeholder-shown
 			& + .topBar-button
 				background-color: grey
@@ -179,6 +180,9 @@ export default {
 		align-items: center
 		background-color: green
 		color: white
+		border: none
+		appearance: none
+		border-radius: 0 4px 4px 0
 	&-select
 		border: none
 		display: inline-block

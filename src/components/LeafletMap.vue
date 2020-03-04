@@ -7,19 +7,7 @@
 		:center="center"
 		style="width: 100%; height: 100vh;"
 		)
-
 		l-tile-layer(:url="url" :attribution='attribution')
-		//- l-marker(
-		//- 	v-if="isUser===true"
-		//- 	:lat="userLat"
-		//- 	:long="userLong"
-		//- 	lat-lng="userLatLong(userLat,userLong)"
-		//- 	@click=" getMarkerIndex(index)"
-		//- 	)
-		//- 	l-icon(
-		//- 		:icon-url='icon'
-		//- 		:icon-size='iconBig'
-		//- 		)
 		v-marker-cluster(:options='clusterOptions')
 			l-marker(
 				v-for="(location, index) in locations"
@@ -132,15 +120,6 @@ export default {
     updateCenter(center) {
 			this.$emit("updateNewCenter", center);
 
-		}
-	},
-	computed: {
-			popupContent(){
-			const popupContent = `
-				<h1> address: ${this.location.properties.mask_adult} </h1>
-				<h2> mask for children: ${this.location.properties.mask_child} </h2>
-			`
-			return popupContent
 		}
 	}
 };

@@ -146,7 +146,7 @@ export default {
 	right: 20%
 	top: 10px
 	background-color: white
-  box-shadow: 2px 0 3px rgba(black,.4)
+	box-shadow: 2px 2px 20px rgba(black, .8)
 	z-index: 1000
 	padding: 24px
 	border-radius: 8px
@@ -276,7 +276,6 @@ export default {
 		animation: hideShow linear forwards .5s
 		transition: .3s animation ease-in-out
 		top: 10px
-		box-shadow: 2px 2px 10px rgba(black, .5)
 		left: 30%
 		right: 30%
 		@media screen and (max-width: 767px)
@@ -284,7 +283,6 @@ export default {
 			bottom: 10px
 			left: 20%
 			right: 20%
-			
 @keyframes hideShow
 	0%
 		opacity: 100%
@@ -292,7 +290,7 @@ export default {
 		
 	50%
 		opacity: 0%
-		transform: translateY(-100px)
+		transform: translateY(-50px)
 	100%
 		opacity: 100%
 		transform: translateY(0)

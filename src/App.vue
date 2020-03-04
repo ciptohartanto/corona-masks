@@ -6,10 +6,7 @@
       :zoom="current.zoom"
       @markerIndex="setMarkerIndex"
       @updateNewZoom="setNewZoom"
-
-      :isUser='user'
-      :userLat='userPos.lat'
-      :userLong='userPos.long'
+ 
 
     )
     top-bar(
@@ -45,11 +42,6 @@ export default {
       current: {
         center: L.latLng(25.054968, 121.537027),
         zoom: 15
-      },
-      user: false,
-      userPos: {
-        lat: null,
-        long: null
       },
       countyList: [],
       townList: [],

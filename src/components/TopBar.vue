@@ -119,15 +119,6 @@ export default {
     setIsPopupContext(){
       this.isPopupContext = !this.isPopupContext
     }
-    // getUserPosition() {
-    //   if (navigator.geolocation) {
-    //     navigator.geolocation.getCurrentPosition(pos => {
-    //       this.current.long = pos.coords.longitude;
-    //       this.current.lat = pos.coords.latitude;
-    //     });
-    //   }
-    //   this.$emit("emitUserPosition", [this.current.long, this.current.lat]);
-    // }
   },
   computed: {
     todayDate(){
@@ -153,7 +144,8 @@ export default {
   @media screen and (max-width: 767px)
     left: 18px
     right: 18px
-    top: 100px
+    top: 50%
+    transform: translateY(-50%)
   &-item
     color: black
   &-inputGroup
@@ -189,7 +181,7 @@ export default {
     border-radius: 0
     height: 34px
     margin-right: 20px
-    padding: 10px 24px
+    padding: 10px 12px
     max-width: 150px
     width: 50%		
     background-color: rgba(grey, .3)	

@@ -123,8 +123,7 @@ export default {
   computed: {
     todayDate(){
       const dates = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
-      
-      return dates[new Date().getDate() - 1]
+      return dates[new Date().getDay()]
     }
   }
 };
@@ -274,6 +273,7 @@ export default {
     top: 10px
     left: 30%
     right: 30%
+    transform: translateY(0)
     @media screen and (max-width: 767px)
       top: auto
       bottom: 10px

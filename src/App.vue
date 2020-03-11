@@ -6,8 +6,6 @@
       :zoom="current.zoom"
       @markerIndex="setMarkerIndex"
       @updateNewZoom="setNewZoom"
- 
-
     )
     top-bar(
       :locations="newArr"
@@ -22,115 +20,118 @@
 </template>
 
 <script>
-import axios from "axios";
-import L from "leaflet";
-
-import LeafletMap from "./components/LeafletMap";
-import TopBar from "./components/TopBar";
+import axios from 'axios'
+import L from 'leaflet'
+import LeafletMap from './components/LeafletMap.vue'
+import TopBar from './components/TopBar.vue'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     LeafletMap,
-    TopBar
+    TopBar,
   },
   data() {
     return {
       locations: [],
-      keyword: "",
+      keyword: '',
       newArr: [],
       current: {
         center: L.latLng(25.054968, 121.537027),
-        zoom: 15
+        zoom: 15,
       },
       countyList: [],
       townList: [],
       selectedCounty: '臺北市',
       selectedTown: '內湖區',
-      maskType: 'allMaskTypes'
-    };
+      maskType: 'allMaskTypes',
+    }
   },
   created() {
     axios
       .get(
-        "https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json"
+        'https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json'
       )
       .then(res => {
-        const allLocations = res.data.features;
-        this.locations = allLocations;
-        this.extractCounties();
-        this.extractTown();
-        this.getTheVeryLocation();
+        const allLocations = res.data.features
+        this.locations = allLocations
+        this.extractCounties()
+        this.extractTown()
+        this.getTheVeryLocation()
         this.setMarkerIndex(1)
-      });
-      document.title = "Mask Locator - Combat Coronavirus, Taiwan!";
-    
+      })
+    document.title = 'Mask Locator - Combat Coronavirus, Taiwan!'
   },
   methods: {
     newAreaFromKeyword() {
-      const locations = this.locations;
-      const keyword = this.keyword;
+      const { locations } = this
+      const { keyword } = this
       const replaceTai = this.selectedCounty.replace('臺', '台')
-      const selectedTown = this.selectedTown
-      const combinedKeywords = replaceTai + selectedTown
-      let newArr = locations.filter(location => {
-        if(keyword !== '') {
-          return location.properties.address.includes(keyword) &&location.properties.mask_adult > 2 && location.properties.mask_child > 2;
-        } else {
-
-          return location.properties.address.includes(combinedKeywords) &&location.properties.mask_adult > 2 && location.properties.mask_child > 2;
-        }
-      });
-      this.newArr = newArr;
-    },
-    goToNewCenter() {
-      const firstLat = this.newArr[0].geometry.coordinates[1];
-      const firstLong = this.newArr[0].geometry.coordinates[0];
-      this.current.center = L.latLng(firstLat,firstLong)
-    },
-    getTheVeryLocation() {
-      const locations = this.locations;
-      const replaceTai = this.selectedCounty.replace('臺', '台')
-      const selectedTown = this.selectedTown
+      const { selectedTown } = this
       const combinedKeywords = replaceTai + selectedTown
       const newArr = locations.filter(location => {
-        return location.properties.address.includes(combinedKeywords)
-      });
+        if (keyword !== '') {
+          return (
+            location.properties.address.includes(keyword) &&
+            location.properties.mask_adult > 2 &&
+            location.properties.mask_child > 2
+          )
+        }
+        return (
+          location.properties.address.includes(combinedKeywords) &&
+          location.properties.mask_adult > 2 &&
+          location.properties.mask_child > 2
+        )
+      })
+      this.newArr = newArr
+    },
+    goToNewCenter() {
+      const firstLat = this.newArr[0].geometry.coordinates[1]
+      const firstLong = this.newArr[0].geometry.coordinates[0]
+      this.current.center = L.latLng(firstLat, firstLong)
+    },
+    getTheVeryLocation() {
+      const { locations } = this
+      const replaceTai = this.selectedCounty.replace('臺', '台')
+      const { selectedTown } = this
+      const combinedKeywords = replaceTai + selectedTown
+      const newArr = locations.filter(location =>
+        location.properties.address.includes(combinedKeywords)
+      )
 
-      this.newArr = newArr;
+      this.newArr = newArr
     },
     goToNewArea(keyword) {
-      this.keyword = keyword;
-      this.newAreaFromKeyword();
-      this.goToNewCenter();
-
+      this.keyword = keyword
+      this.newAreaFromKeyword()
+      this.goToNewCenter()
     },
     setMarkerIndex(index) {
-      const lat = this.newArr[index].geometry.coordinates[1];
-      const long = this.newArr[index].geometry.coordinates[0];
-      this.current.center = L.latLng(lat, long);
+      const lat = this.newArr[index].geometry.coordinates[1]
+      const long = this.newArr[index].geometry.coordinates[0]
+      this.current.center = L.latLng(lat, long)
       // this.current.zoom = 17; // problematic
     },
     setNewZoom(zoom) {
-      this.current.zoom = zoom;
+      this.current.zoom = zoom
     },
     setNewCenter(center) {
-      this.current.center = center;
+      this.current.center = center
     },
     extractCounties() {
-      const countyArr = this.locations.map(location => location.properties.county)
-      const countyList = [... new Set(countyArr)]
+      const countyArr = this.locations.map(
+        location => location.properties.county
+      )
+      const countyList = [...new Set(countyArr)]
       this.countyList = countyList.filter(x => x)
-
     },
     extractTown() {
-      const correctTownArr =
-        this.locations.map(location => {
-          if (this.selectedCounty === location.properties.county) {
-            return location.properties.town
-          }
-        })
-      const townList = [... new Set(correctTownArr)]
+      const correctTownArr = this.locations.map(location => {
+        if (this.selectedCounty === location.properties.county) {
+          return location.properties.town
+        }
+      })
+      const townList = [...new Set(correctTownArr)]
       this.townList = townList.filter(x => x)
     },
     setSelectedCounty(val) {
@@ -138,29 +139,31 @@ export default {
       this.keyword = ''
       this.selectedTown = ''
       this.extractTown()
-      this.newAreaFromKeyword();
-      this.goToNewCenter();
+      this.newAreaFromKeyword()
+      this.goToNewCenter()
     },
-    setSelectedTown(val){
+    setSelectedTown(val) {
       this.selectedTown = val
       this.keyword = ''
-      this.newAreaFromKeyword();
-      this.goToNewCenter();
+      this.newAreaFromKeyword()
+      this.goToNewCenter()
     },
-    setMaskType(val){
+    setMaskType(val) {
       this.maskType = val
-      const newArr = this.newArr
+      const { newArr } = this
       const newArrMaskType = newArr.filter(location => {
-        if(this.maskType === 'allMaskTypes') {
-          return location.properties.mask_adult > 2 && location.properties.mask_child > 2
-        } else {
-          return location.properties.mask_child > 2
+        if (this.maskType === 'allMaskTypes') {
+          return (
+            location.properties.mask_adult > 2 &&
+            location.properties.mask_child > 2
+          )
         }
+        return location.properties.mask_child > 2
       })
-     this.newArr = newArrMaskType
-    }
-  }
-};
+      this.newArr = newArrMaskType
+    },
+  },
+}
 </script>
 
 <style lang='sass'>

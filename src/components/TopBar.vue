@@ -6,32 +6,32 @@
       .topBar-close(@click="setIsPopupContext")
         include ./../assets/close.svg
       .topBar-top
-        h1.topBar-title 
-          | {{translate.message}} 
+        h1.topBar-title
+          | {{translate.message}}
           br
           | 今天是{{todayDate}}
 
         h2.topBar-caption
-          | Let's combat Coronavirus! 
-          br 
-          | This simple app will help you get masks for you and your beloved ones!	
+          | Let's combat Coronavirus!
+          br
+          | This simple app will help you get masks for you and your beloved ones!
       .topBar-bottom
-      
+
         .topBar-bottomSection
           h3.topBar-subtitle Store Locator
           .topBar-radioGroup
             .topBar-theradio
               input.topBar-radio(name="searchBy" type='radio' v-model='searchBy' value="selectionAddress")
               label.topbar-caption 選項
-              
+
             .topBar-theradio
               input.topBar-radio(name="searchBy" type='radio' v-model='searchBy' value="manualAddress")
               label.topbar-caption 填寫地址
-            
+
           .topBar-inputGroup(v-if="searchBy === 'manualAddress'")
             input.topBar-input(type="text" :placeholder="translate.inputPlaceholder" v-model="keyword")
             button.topBar-button(@click="getKeyword(); setIsPopupContext()") 搜尋
-            
+
           .topBar-selectGroup(v-if="searchBy === 'selectionAddress'")
             select.topBar-select(v-model="selectedCounty" @change="getSelectedCounty")
               option(default selected disabled value='') {{translate.selectCounty}}
@@ -39,51 +39,50 @@
             select.topBar-select(v-model="selectedTown" @change="getSelectedTown(); setIsPopupContext()")
               option(default selected disabled value='') {{translate.selectTown}}
               option(v-for="(data, index) in townData" :value="data" :key="index") {{data}}
-              
+
         .topBar-bottomSection
           h3.topBar-subtitle Mask Type
           .topBar-radioGroup
             .topBar-theradio
               input.topBar-radio(name="maskTypes" type='radio' v-model='maskType' value="allMaskTypes" @change="setMaskTypes")
               label.topbar-caption 成人與兒童用的
-              
+
             .topBar-theradio
               input.topBar-radio(name="maskTypes" type='radio' v-model='maskType' value="childrenMaskType" @change="setMaskTypes")
               label.topbar-caption 兒童用的
-          
-      
+
+
         //- button(@click="getUserPosition") My Position
 
 </template>
 
 <script>
 export default {
-  name: "TopBar",
+  name: 'TopBar',
   props: {
     locations: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     message: {
       type: String,
-      default: () => ''
+      default: () => '',
     },
     countyData: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     townData: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
-
   },
   data() {
     return {
-      keyword: "",
+      keyword: '',
       current: {
         long: null,
-        lat: null
+        lat: null,
       },
       selectedCounty: '臺北市',
       selectedTown: '內湖區',
@@ -91,42 +90,50 @@ export default {
         selectTown: '地區',
         selectCounty: '城市',
         inputPlaceholder: '地址',
-        message: '哈囉!'
+        message: '哈囉!',
       },
       searchBy: 'selectionAddress',
       maskType: 'allMaskTypes',
-      isPopupContext: true
-    };
+      isPopupContext: true,
+    }
+  },
+  computed: {
+    todayDate() {
+      const dates = [
+        '星期日',
+        '星期一',
+        '星期二',
+        '星期三',
+        '星期四',
+        '星期五',
+        '星期六',
+      ]
+      return dates[new Date().getDay()]
+    },
   },
 
   methods: {
     getKeyword() {
-      this.isPopup = false			
-      this.$emit("gotKeyword", this.keyword);
+      this.isPopup = false
+      this.$emit('gotKeyword', this.keyword)
     },
-    getSelectedCounty(){
+    getSelectedCounty() {
       this.keyword = ''
       this.$emit('gotSelectedCounty', this.selectedCounty)
     },
-    getSelectedTown(){
+    getSelectedTown() {
       this.keyword = ''
       this.isPopup = false
       this.$emit('gotSelectedTown', this.selectedTown)
     },
-    setMaskTypes(){
+    setMaskTypes() {
       this.$emit('gotMaskType', this.maskType)
     },
-    setIsPopupContext(){
+    setIsPopupContext() {
       this.isPopupContext = !this.isPopupContext
-    }
+    },
   },
-  computed: {
-    todayDate(){
-      const dates = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
-      return dates[new Date().getDay()]
-    }
-  }
-};
+}
 </script>
 
 <style lang="sass">
@@ -182,17 +189,17 @@ export default {
     margin-right: 20px
     padding: 10px 12px
     max-width: 150px
-    width: 50%		
-    background-color: rgba(grey, .3)	
+    width: 50%
+    background-color: rgba(grey, .3)
 
   &-top
 
-  
+
   &-caption
     font-size: 18px
     font-weight: normal
     margin-bottom: 20px
-    
+
   &-radio
     border: 1px solid green
     width: 15px
@@ -215,7 +222,7 @@ export default {
         bottom: 0
         left: 50%
         transform: translateX(-50%) translateY(-50%)
-    
+
   &-theradio
     display: flex
     width: 200px
@@ -239,7 +246,7 @@ export default {
       margin-right: 0
       margin-left: 9px
       margin-bottom: 0
-    
+
   &-subtitle
     margin-bottom: 10px
     position: relative
@@ -251,7 +258,7 @@ export default {
       height: 2px
       width: 30px
       background-color: red
-      
+
   &-selectGroup
     display: flex
   &-close
@@ -283,7 +290,7 @@ export default {
   0%
     opacity: 100%
     transform: translateY(0)
-    
+
   50%
     opacity: 0%
     transform: translateY(-50px)

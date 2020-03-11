@@ -21,7 +21,6 @@
 						.popup-stackUp
 							span.popup-addressSubtitle {{location.properties.address}}
 							span.popup-addressSubtitle {{location.properties.phone}}
-							
 						.popup-mainInfo
 							.popup-wrapp
 								span.popup-addressIcon
@@ -38,60 +37,52 @@
 </template>
 
 <script>
-import L from "leaflet";
-import { LMap, LTileLayer, LMarker, LIcon, LPopup } from "vue2-leaflet";
+import L from 'leaflet'
+import { LMap, LTileLayer, LMarker, LIcon, LPopup } from 'vue2-leaflet'
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
-import { Icon } from "leaflet";
-import pin from "./../assets/marker.png";
-delete Icon.Default.prototype._getIconUrl;
-Icon.Default.mergeOptions({
-  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-  iconUrl: require("leaflet/dist/images/marker-icon.png"),
-  shadowUrl: require("leaflet/dist/images/marker-shadow.png")
-});
-
+import pin from '../assets/marker.png'
 
 export default {
-  name: "LeafletMap",
+  name: 'LeafletMap',
   components: {
     LMap,
     LTileLayer,
     LMarker,
     LIcon,
     L,
-		'v-marker-cluster': Vue2LeafletMarkerCluster,
-		LPopup
+    'v-marker-cluster': Vue2LeafletMarkerCluster,
+    LPopup,
   },
   props: {
     locations: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     zoom: {
       type: Number,
-      default: () => 0
+      default: () => 0,
     },
     center: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     isUser: {
       type: Boolean,
-      default: () => false
+      default: () => false,
     },
     userLat: {
       type: Number,
-      default: () => null
+      default: () => null,
     },
     userLong: {
       type: Number,
-      default: () => null
-    }
+      default: () => null,
+    },
   },
   data() {
     return {
       url:
-        "https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}@2x.png?key=9oeahMFWIODM5nvypMGz",
+        'https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}@2x.png?key=9oeahMFWIODM5nvypMGz',
       attribution:
         '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
 
@@ -101,28 +92,26 @@ export default {
       clusterOptions: {
         disableClusteringAtZoom: 17,
       },
-    };
+    }
   },
   methods: {
     getLatLong(lat, long) {
-      return L.latLng(lat, long);
+      return L.latLng(lat, long)
     },
     userLatLong(lat, long) {
-      return L.latLng(lat, long);
+      return L.latLng(lat, long)
     },
     getMarkerIndex(index) {
-      this.$emit("markerIndex", index);
+      this.$emit('markerIndex', index)
     },
     updateZoom(zoom) {
-			this.$emit("updateNewZoom", zoom);
-
+      this.$emit('updateNewZoom', zoom)
     },
     updateCenter(center) {
-			this.$emit("updateNewCenter", center);
-
-		}
-	}
-};
+      this.$emit('updateNewCenter', center)
+    },
+  },
+}
 </script>
 
 <style lang="sass">
@@ -131,7 +120,7 @@ export default {
 .icon--big
 	width: 75px
 	height: 75px
-	
+
 
 .popup
 	&-address
@@ -161,15 +150,15 @@ export default {
 		margin-top: 20px
 		display: flex
 		justify-content: space-between
-		
-		
+
+
 // resetting UI
 .leaflet-popup-content-wrapper
 	border-radius: 0 !important
 .leaflet-popup
 	bottom: 10px !important
 .leaflet-popup-content
-	margin: 24px !important 
+	margin: 24px !important
 	@media screen and (max-width: 450px)
 		width: 320px !important
 		max-width: 80% !important

@@ -71,10 +71,6 @@ export default {
       keyword: '',
       selectedCounty: this.$store.state.selectedCounty,
       selectedTown: this.$store.state.selectedTown,
-      current: {
-        long: null,
-        lat: null
-      },
       translate: {
         selectTown: '地區',
         selectCounty: '城市',

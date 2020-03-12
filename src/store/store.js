@@ -5,11 +5,19 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    locations: []
+    locations: [],
+    keyword: '',
+    isPopup: true
   },
   mutations: {
     updateLocations(state, payload) {
       state.locations = payload
+    },
+    updateKeyword(state, payload) {
+      state.keyword = payload
+    },
+    updateIsPopup(state, payload) {
+      state.isPopup = payload
     }
   },
   actions: {},

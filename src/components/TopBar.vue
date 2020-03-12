@@ -1,9 +1,9 @@
 <template lang="pug">
-  .topBar(:class="`${isPopupContext === true ? '' : 'topBar--isClosed'}`")
-    .topBar-intro(v-if="isPopupContext !== true")
-      button.topBar-button2(@click="setIsPopupContext") Show Settings Panel
+  .topBar(:class="`${isPopup === true ? '' : 'topBar--isClosed'}`")
+    .topBar-intro(v-if="isPopup !== true")
+      button.topBar-button2(@click="setIsPopup") Show Settings Panel
     .topBar-context(v-else)
-      .topBar-close(@click="setIsPopupContext")
+      .topBar-close(@click="setIsPopup")
         include ./../assets/close.svg
       .topBar-top
         h1.topBar-title
@@ -30,13 +30,13 @@
 
           .topBar-inputGroup(v-if="searchBy === 'manualAddress'")
             input.topBar-input(type="text" :placeholder="translate.inputPlaceholder" v-model="keyword")
-            button.topBar-button(@click="getKeyword(); setIsPopupContext()") 搜尋
+            button.topBar-button(@click="getKeyword(); setIsPopup()") 搜尋
 
           .topBar-selectGroup(v-if="searchBy === 'selectionAddress'")
             select.topBar-select(v-model="selectedCounty" @change="getSelectedCounty")
               option(default selected disabled value='') {{translate.selectCounty}}
               option(v-for="(data, index) in countyData" :value="data" :key="index") {{data}}
-            select.topBar-select(v-model="selectedTown" @change="getSelectedTown(); setIsPopupContext()")
+            select.topBar-select(v-model="selectedTown" @change="getSelectedTown(); setIsPopup()")
               option(default selected disabled value='') {{translate.selectTown}}
               option(v-for="(data, index) in townData" :value="data" :key="index") {{data}}
 
@@ -60,14 +60,6 @@
 export default {
   name: 'TopBar',
   props: {
-    locations: {
-      type: Array,
-      default: () => []
-    },
-    message: {
-      type: String,
-      default: () => ''
-    },
     countyData: {
       type: Array,
       default: () => []
@@ -93,8 +85,7 @@ export default {
         message: '哈囉!'
       },
       searchBy: 'selectionAddress',
-      maskType: 'allMaskTypes',
-      isPopupContext: true
+      maskType: 'allMaskTypes'
     }
   },
   computed: {
@@ -109,13 +100,15 @@ export default {
         '星期六'
       ]
       return dates[new Date().getDay()]
+    },
+    isPopup() {
+      return this.$store.state.isPopup
     }
   },
 
   methods: {
     getKeyword() {
-      this.isPopup = false
-      this.$emit('gotKeyword', this.keyword)
+      this.$store.commit('updateKeyword', this.keyword)
     },
     getSelectedCounty() {
       this.keyword = ''
@@ -129,8 +122,8 @@ export default {
     setMaskTypes() {
       this.$emit('gotMaskType', this.maskType)
     },
-    setIsPopupContext() {
-      this.isPopupContext = !this.isPopupContext
+    setIsPopup() {
+      this.$store.commit('updateIsPopup', !this.isPopup)
     }
   }
 }

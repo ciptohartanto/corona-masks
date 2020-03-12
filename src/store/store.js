@@ -8,10 +8,12 @@ export const store = new Vuex.Store({
     locations: [],
     keyword: '',
     isPopup: true,
+    towns: [],
+    counties: [],
     selectedCounty: '臺北市',
     selectedTown: '內湖區',
-    towns: [],
-    counties: []
+    searchBy: 'selectionAddress',
+    maskType: 'allMaskTypes'
   },
   mutations: {
     updateInitialLocationArray(state, payload) {
@@ -22,6 +24,12 @@ export const store = new Vuex.Store({
     },
     updateIsPopup(state, payload) {
       state.isPopup = payload
+    },
+    updateSelectedCounty(state, payload) {
+      state.selectedCounty = payload
+    },
+    updateSelectedTown(state, payload) {
+      state.selectedTown = payload
     }
   },
   actions: {},

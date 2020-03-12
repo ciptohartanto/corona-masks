@@ -64,6 +64,8 @@ export default {
   data() {
     return {
       keyword: '',
+      selectedCounty: this.$store.state.selectedCounty,
+      selectedTown: this.$store.state.selectedTown,
       current: {
         long: null,
         lat: null
@@ -73,9 +75,7 @@ export default {
         selectCounty: '城市',
         inputPlaceholder: '地址',
         message: '哈囉!'
-      },
-      searchBy: 'selectionAddress',
-      maskType: 'allMaskTypes'
+      }
     }
   },
   computed: {
@@ -91,11 +91,11 @@ export default {
     counties() {
       return this.$store.state.counties
     },
-    selectedCounty() {
-      return this.$store.state.selectedCounty
+    searchBy() {
+      return this.$store.state.searchBy
     },
-    selectedTown() {
-      return this.$store.state.selectedTown
+    maskType() {
+      return this.$store.state.maskType
     }
   },
 
@@ -103,14 +103,16 @@ export default {
     getKeyword() {
       this.$store.commit('updateKeyword', this.keyword)
     },
+    emptyKeyword() {
+      this.$store.commit('updateKeyword', '')
+    },
     getSelectedCounty() {
-      this.keyword = ''
-      this.$emit('gotSelectedCounty', this.selectedCounty)
+      this.emptyKeyword()
+      this.$store.commit('updateSelectedCounty', this.selectedCounty)
     },
     getSelectedTown() {
-      this.keyword = ''
-      this.isPopup = false
-      this.$emit('gotSelectedTown', this.selectedTown)
+      this.emptyKeyword()
+      this.$store.commit('updateSelectedTown', this.selectedTown)
     },
     setMaskTypes() {
       this.$emit('gotMaskType', this.maskType)

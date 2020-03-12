@@ -11,10 +11,10 @@ export const store = new Vuex.Store({
     towns: [],
     counties: [],
     center: L.latLng(25.054968, 121.537027),
-    zoom: 15,
+    zoom: 13,
     keyword: '',
     selectedCounty: '臺北市',
-    selectedTown: '內湖區',
+    selectedTown: '',
     searchBy: 'selectionAddress',
     maskType: 'allMaskTypes',
     isPopup: true

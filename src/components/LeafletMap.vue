@@ -1,7 +1,6 @@
 <template lang="pug">
   #mapid
     l-map(
-      @update:center="updateCenter"
       @update:zoom='updateZoom'
       :zoom="zoom"
       :center="center"
@@ -53,32 +52,6 @@ export default {
     'v-marker-cluster': Vue2LeafletMarkerCluster,
     LPopup
   },
-  props: {
-    locations: {
-      type: Array,
-      default: () => []
-    },
-    zoom: {
-      type: Number,
-      default: () => 0
-    },
-    center: {
-      type: Object,
-      default: () => {}
-    },
-    isUser: {
-      type: Boolean,
-      default: () => false
-    },
-    userLat: {
-      type: Number,
-      default: () => null
-    },
-    userLong: {
-      type: Number,
-      default: () => null
-    }
-  },
   data() {
     return {
       url:
@@ -94,21 +67,23 @@ export default {
       }
     }
   },
+  computed: {
+    locations() {
+      return this.$store.state.newArr
+    },
+    center() {
+      return this.$store.state.center
+    },
+    zoom() {
+      return this.$store.state.zoom
+    }
+  },
   methods: {
     getLatLong(lat, long) {
       return L.latLng(lat, long)
     },
-    userLatLong(lat, long) {
-      return L.latLng(lat, long)
-    },
-    getMarkerIndex(index) {
-      this.$emit('markerIndex', index)
-    },
     updateZoom(zoom) {
-      this.$emit('updateNewZoom', zoom)
-    },
-    updateCenter(center) {
-      this.$emit('updateNewCenter', center)
+      this.$store.commit('updateCurrentZoom', zoom)
     }
   }
 }

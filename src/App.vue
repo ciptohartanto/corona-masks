@@ -1,23 +1,10 @@
 <template lang="pug">
   #app
-    leaflet-map(
-      :locations="newArr"
-      :center="center"
-      :zoom="zoom"
-      @markerIndex="setMarkerIndex"
-      @updateNewZoom="setNewZoom"
-    )
-    top-bar(
-      :locations="newArr"
-      @gotKeyword="goToNewArea"
-      @gotSelectedCounty="setSelectedCounty"
-      @gotSelectedTown="setSelectedTown"
-      @gotMaskType='setMaskType'
-    )
+    leaflet-map
+    top-bar
 </template>
 
 <script>
-import L from 'leaflet'
 import LeafletMap from './components/LeafletMap.vue'
 import TopBar from './components/TopBar.vue'
 import { locationsMixin } from './mixins/locations'
@@ -29,30 +16,11 @@ export default {
     TopBar
   },
   mixins: [locationsMixin],
-
   created() {
     this.getAPI()
-    this.getTheVeryLocation()
-    this.setMarkerIndex(1)
     document.title = 'Mask Locator - Combat Coronavirus, Taiwan!'
   },
-  computed: {
-    locations() {
-      return this.$store.state.locations
-    },
-    keyword() {
-      return this.$store.state.keyword
-    },
-    newArr() {
-      return this.$store.state.newArr
-    },
-    center() {
-      return this.$store.state.center
-    },
-    zoom() {
-      return this.$store.state.zoom
-    }
-  },
+
   methods: {
     async getAPI() {
       try {
@@ -61,54 +29,6 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    },
-    goToNewCenter() {
-      // const firstLat = this.newArr[0].geometry.coordinates[1]
-      // const firstLong = this.newArr[0].geometry.coordinates[0]
-      // this.current.center = L.latLng(firstLat, firstLong)
-    },
-    getTheVeryLocation() {
-      const { locations } = this
-      const replaceTai = this.selectedCounty.replace('臺', '台')
-      const { selectedTown } = this
-      const combinedKeywords = replaceTai + selectedTown
-      const newArr = locations.filter(location =>
-        location.properties.address.includes(combinedKeywords)
-      )
-
-      this.newArr = newArr
-    },
-    goToNewArea(keyword) {
-      this.keyword = keyword
-      // this.newAreaFromKeyword()
-      // this.goToNewCenter()
-    },
-    setMarkerIndex(index) {
-      const lat = this.newArr[index].geometry.coordinates[1]
-      const long = this.newArr[index].geometry.coordinates[0]
-      this.current.center = L.latLng(lat, long)
-      // this.current.zoom = 17; // problematic
-    },
-    setNewZoom(zoom) {
-      this.$store.commit('updateCurrentZoom', zoom)
-    },
-    setNewCenter(center) {
-      this.current.center = center
-    },
-
-    setSelectedCounty(val) {
-      this.selectedCounty = val
-      this.keyword = ''
-      this.selectedTown = ''
-      this.extractTown()
-      this.newAreaFromKeyword()
-      this.goToNewCenter()
-    },
-    setSelectedTown(val) {
-      this.selectedTown = val
-      this.keyword = ''
-      this.newAreaFromKeyword()
-      this.goToNewCenter()
     },
     setMaskType(val) {
       this.maskType = val

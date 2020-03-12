@@ -79,6 +79,9 @@ export default {
     }
   },
   computed: {
+    newArr() {
+      return this.$store.state.newArr
+    },
     todayDate() {
       return this.dayOfToday
     },

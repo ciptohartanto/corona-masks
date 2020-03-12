@@ -20,10 +20,10 @@
 </template>
 
 <script>
-import axios from 'axios'
 import L from 'leaflet'
 import LeafletMap from './components/LeafletMap.vue'
 import TopBar from './components/TopBar.vue'
+import { locationsMixin } from './mixins/locations'
 
 export default {
   name: 'App',
@@ -31,9 +31,9 @@ export default {
     LeafletMap,
     TopBar
   },
+  mixins: [locationsMixin],
   data() {
     return {
-      locations: [],
       keyword: '',
       newArr: [],
       current: {
@@ -48,21 +48,27 @@ export default {
     }
   },
   created() {
-    axios
-      .get(
-        'https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json'
-      )
-      .then(res => {
-        const allLocations = res.data.features
-        this.locations = allLocations
-        this.extractCounties()
-        this.extractTown()
-        this.getTheVeryLocation()
-        this.setMarkerIndex(1)
-      })
+    this.getAPI()
+    this.extractCounties()
+    this.extractTown()
+    this.getTheVeryLocation()
+    this.setMarkerIndex(1)
     document.title = 'Mask Locator - Combat Coronavirus, Taiwan!'
   },
+  computed: {
+    locations() {
+      return this.$store.state.locations
+    }
+  },
   methods: {
+    async getAPI() {
+      try {
+        const res = await this.getLocations()
+        this.$store.commit('updateLocations', res.data.features)
+      } catch (err) {
+        console.log(err)
+      }
+    },
     newAreaFromKeyword() {
       const { locations } = this
       const { keyword } = this

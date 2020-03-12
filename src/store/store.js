@@ -4,8 +4,14 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
-  state: {},
-  mutations: {},
+  state: {
+    locations: []
+  },
+  mutations: {
+    updateLocations(state, payload) {
+      state.locations = payload
+    }
+  },
   actions: {},
   getters: {}
 })

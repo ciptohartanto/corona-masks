@@ -57,8 +57,10 @@
 </template>
 
 <script>
+import { theDate } from './../mixins/date'
 export default {
   name: 'TopBar',
+  mixins: [theDate],
   data() {
     return {
       keyword: '',
@@ -78,16 +80,7 @@ export default {
   },
   computed: {
     todayDate() {
-      const dates = [
-        '星期日',
-        '星期一',
-        '星期二',
-        '星期三',
-        '星期四',
-        '星期五',
-        '星期六'
-      ]
-      return dates[new Date().getDay()]
+      return this.dayOfToday
     },
     isPopup() {
       return this.$store.state.isPopup

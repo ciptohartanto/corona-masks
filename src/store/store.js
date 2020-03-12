@@ -45,7 +45,11 @@ export const store = new Vuex.Store({
       state.searchBy = payload
     }
   },
-  actions: {},
+  actions: {
+    setInitLocationsArray(context, payload) {
+      context.commit('initLocationsArray', payload)
+    }
+  },
   getters: {
     towns(state) {
       const mappedLocations = store.state.locations.map(loc => {

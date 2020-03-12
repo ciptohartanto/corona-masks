@@ -6,8 +6,13 @@
       :center="center"
       style="width: 100%; height: 100vh;"
       )
-      l-tile-layer(:url="url" :attribution='attribution')
-      v-marker-cluster(:options='clusterOptions')
+      l-tile-layer(
+        :url="url"
+        :attribution='attribution'
+        )
+      v-marker-cluster(
+        :options='clusterOptions'
+        )
         l-marker(
           v-for="(location, index) in locations"
           :key="index"

@@ -1,7 +1,10 @@
 <template lang="pug">
-  .topBar(:class="`${isPopup === true ? '' : 'topBar--isClosed'}`")
+  .topBar(
+    :class="`${isPopup === true ? '' : 'topBar--isClosed'}`"
+    )
     .topBar-intro(v-if="isPopup !== true")
       button.topBar-button2(@click="setIsPopup") Show Settings Panel
+      
     .topBar-context(v-else)
       .topBar-close(@click="setIsPopup")
         include ./../assets/close.svg
@@ -21,11 +24,13 @@
           h3.topBar-subtitle Store Locator
           .topBar-radioGroup
             .topBar-theradio
-              input.topBar-radio(name="searchBy" type='radio' v-model='searchBy' value="selectionAddress")
+              input.topBar-radio(
+                name="searchBy" type='radio' v-model='searchBy' value="selectionAddress")
               label.topbar-caption 選項
 
             .topBar-theradio
-              input.topBar-radio(name="searchBy" type='radio' v-model='searchBy' value="manualAddress")
+              input.topBar-radio(
+                name="searchBy" type='radio' v-model='searchBy' value="manualAddress")
               label.topbar-caption 填寫地址
 
           .topBar-inputGroup(v-if="searchBy === 'manualAddress'")

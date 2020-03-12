@@ -35,10 +35,10 @@
           .topBar-selectGroup(v-if="searchBy === 'selectionAddress'")
             select.topBar-select(v-model="selectedCounty" @change="getSelectedCounty")
               option(default selected disabled value='') {{translate.selectCounty}}
-              option(v-for="(data, index) in countyData" :value="data" :key="index") {{data}}
+              option(v-for="(data, index) in counties" :value="data" :key="index") {{data}}
             select.topBar-select(v-model="selectedTown" @change="getSelectedTown(); setIsPopup()")
               option(default selected disabled value='') {{translate.selectTown}}
-              option(v-for="(data, index) in townData" :value="data" :key="index") {{data}}
+              option(v-for="(data, index) in towns" :value="data" :key="index") {{data}}
 
         .topBar-bottomSection
           h3.topBar-subtitle Mask Type
@@ -59,16 +59,6 @@
 <script>
 export default {
   name: 'TopBar',
-  props: {
-    countyData: {
-      type: Array,
-      default: () => []
-    },
-    townData: {
-      type: Array,
-      default: () => []
-    }
-  },
   data() {
     return {
       keyword: '',
@@ -76,8 +66,6 @@ export default {
         long: null,
         lat: null
       },
-      selectedCounty: '臺北市',
-      selectedTown: '內湖區',
       translate: {
         selectTown: '地區',
         selectCounty: '城市',
@@ -103,6 +91,18 @@ export default {
     },
     isPopup() {
       return this.$store.state.isPopup
+    },
+    towns() {
+      return this.$store.state.towns
+    },
+    counties() {
+      return this.$store.state.counties
+    },
+    selectedCounty() {
+      return this.$store.state.selectedCounty
+    },
+    selectedTown() {
+      return this.$store.state.selectedTown
     }
   },
 

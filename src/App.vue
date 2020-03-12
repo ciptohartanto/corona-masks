@@ -34,8 +34,6 @@ export default {
   mixins: [locationsMixin],
   data() {
     return {
-      keyword: '',
-      newArr: [],
       current: {
         center: L.latLng(25.054968, 121.537027),
         zoom: 15
@@ -49,8 +47,6 @@ export default {
   },
   created() {
     this.getAPI()
-    this.extractCounties()
-    this.extractTown()
     this.getTheVeryLocation()
     this.setMarkerIndex(1)
     document.title = 'Mask Locator - Combat Coronavirus, Taiwan!'
@@ -58,38 +54,42 @@ export default {
   computed: {
     locations() {
       return this.$store.state.locations
+    },
+    keyword() {
+      return this.$store.state.keyword
     }
+    // newArr() {
+    //   // const storeLocations = this.locations
+    //   // const storeKeyword = this.keyword
+    //   // const replaceTai = this.selectedCounty.replace('臺', '台')
+    //   // const { selectedTown } = this
+    //   // const combinedKeywords = replaceTai + selectedTown
+    //   // const newArr = locations.filter(location => {
+    //   //   if (keyword !== '') {
+    //   //     return (
+    //   //       location.properties.address.includes(keyword) &&
+    //   //       location.properties.mask_adult > 2 &&
+    //   //       location.properties.mask_child > 2
+    //   //     )
+    //   //   }
+    //   //   return (
+    //   //     location.properties.address.includes(combinedKeywords) &&
+    //   //     location.properties.mask_adult > 2 &&
+    //   //     location.properties.mask_child > 2
+    //   //   )
+    //   // })
+    //   this.$store.getters.counties
+    //   return this.$store.state.locations
+    // }
   },
   methods: {
     async getAPI() {
       try {
         const res = await this.getLocations()
-        this.$store.commit('updateLocations', res.data.features)
+        this.$store.commit('updateInitialLocationArray', res.data.features)
       } catch (err) {
         console.log(err)
       }
-    },
-    newAreaFromKeyword() {
-      const { locations } = this
-      const { keyword } = this
-      const replaceTai = this.selectedCounty.replace('臺', '台')
-      const { selectedTown } = this
-      const combinedKeywords = replaceTai + selectedTown
-      const newArr = locations.filter(location => {
-        if (keyword !== '') {
-          return (
-            location.properties.address.includes(keyword) &&
-            location.properties.mask_adult > 2 &&
-            location.properties.mask_child > 2
-          )
-        }
-        return (
-          location.properties.address.includes(combinedKeywords) &&
-          location.properties.mask_adult > 2 &&
-          location.properties.mask_child > 2
-        )
-      })
-      this.newArr = newArr
     },
     goToNewCenter() {
       const firstLat = this.newArr[0].geometry.coordinates[1]
@@ -124,22 +124,7 @@ export default {
     setNewCenter(center) {
       this.current.center = center
     },
-    extractCounties() {
-      const countyArr = this.locations.map(
-        location => location.properties.county
-      )
-      const countyList = [...new Set(countyArr)]
-      this.countyList = countyList.filter(x => x)
-    },
-    extractTown() {
-      const correctTownArr = this.locations.map(location => {
-        if (this.selectedCounty === location.properties.county) {
-          return location.properties.town
-        }
-      })
-      const townList = [...new Set(correctTownArr)]
-      this.townList = townList.filter(x => x)
-    },
+
     setSelectedCounty(val) {
       this.selectedCounty = val
       this.keyword = ''

@@ -42,9 +42,16 @@
 
 <script>
 import L from 'leaflet'
+import { Icon } from 'leaflet'
 import { LMap, LTileLayer, LMarker, LIcon, LPopup } from 'vue2-leaflet'
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 import pin from '../assets/marker.png'
+delete Icon.Default.prototype._getIconUrl
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+})
 
 export default {
   name: 'LeafletMap',

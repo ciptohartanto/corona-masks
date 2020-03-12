@@ -37,12 +37,7 @@ export default {
       current: {
         center: L.latLng(25.054968, 121.537027),
         zoom: 15
-      },
-      countyList: [],
-      townList: [],
-      selectedCounty: '臺北市',
-      selectedTown: '內湖區',
-      maskType: 'allMaskTypes'
+      }
     }
   },
   created() {
@@ -57,36 +52,16 @@ export default {
     },
     keyword() {
       return this.$store.state.keyword
+    },
+    newArr() {
+      return this.$store.state.newArr
     }
-    // newArr() {
-    //   // const storeLocations = this.locations
-    //   // const storeKeyword = this.keyword
-    //   // const replaceTai = this.selectedCounty.replace('臺', '台')
-    //   // const { selectedTown } = this
-    //   // const combinedKeywords = replaceTai + selectedTown
-    //   // const newArr = locations.filter(location => {
-    //   //   if (keyword !== '') {
-    //   //     return (
-    //   //       location.properties.address.includes(keyword) &&
-    //   //       location.properties.mask_adult > 2 &&
-    //   //       location.properties.mask_child > 2
-    //   //     )
-    //   //   }
-    //   //   return (
-    //   //     location.properties.address.includes(combinedKeywords) &&
-    //   //     location.properties.mask_adult > 2 &&
-    //   //     location.properties.mask_child > 2
-    //   //   )
-    //   // })
-    //   this.$store.getters.counties
-    //   return this.$store.state.locations
-    // }
   },
   methods: {
     async getAPI() {
       try {
         const res = await this.getLocations()
-        this.$store.commit('updateInitialLocationArray', res.data.features)
+        this.$store.commit('initLocationsArray', res.data.features)
       } catch (err) {
         console.log(err)
       }

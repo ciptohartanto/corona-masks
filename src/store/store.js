@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     locations: [],
+    newArr: [],
     keyword: '',
     isPopup: true,
     towns: [],
@@ -16,7 +17,7 @@ export const store = new Vuex.Store({
     maskType: 'allMaskTypes'
   },
   mutations: {
-    updateInitialLocationArray(state, payload) {
+    initLocationsArray(state, payload) {
       state.locations = payload
     },
     updateKeyword(state, payload) {
@@ -49,6 +50,32 @@ export const store = new Vuex.Store({
       )
       const countyList = [...new Set(mappedLocations)]
       return (state.counties = countyList.filter(x => x))
+    },
+    update(state) {
+      const storeLocations = state.locations
+      const storeKeyword = state.keyword
+      const storeSelectedTown = state.selectedTown
+      const storeSeectedCounty = state.selectedCounty
+
+      const replaceTai = storeSeectedCounty.replace('臺', '台')
+
+      const combinedKeywords = replaceTai + storeSelectedTown
+
+      const newArr = storeLocations.filter(loc => {
+        if (storeKeyword !== '') {
+          return (
+            loc.properties.address.includes(storeKeyword) &&
+            loc.properties.mask_adult > 2 &&
+            loc.properties.mask_child > 2
+          )
+        }
+        return (
+          loc.properties.address.includes(combinedKeywords) &&
+          loc.properties.mask_adult > 2 &&
+          loc.properties.mask_child > 2
+        )
+      })
+      return (state.newArr = newArr)
     }
   }
 })

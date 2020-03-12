@@ -38,10 +38,10 @@
             button.topBar-button(@click="getKeyword(); setIsPopup()") 搜尋
 
           .topBar-selectGroup(v-if="searchBy === 'selectionAddress'")
-            select.topBar-select(v-model="selectedCounty" @change="getSelectedCounty")
+            select.topBar-select(v-model="selectedCounty" @change="changeSelectedCounty")
               option(default selected disabled value='') {{translate.selectCounty}}
               option(v-for="(data, index) in counties" :value="data" :key="index") {{data}}
-            select.topBar-select(v-model="selectedTown" @change="getSelectedTown(); setIsPopup()")
+            select.topBar-select(v-model="selectedTown" @change="changeSelectedTown(); setIsPopup()")
               option(default selected disabled value='') {{translate.selectTown}}
               option(v-for="(data, index) in towns" :value="data" :key="index") {{data}}
 
@@ -108,11 +108,11 @@ export default {
     emptyKeyword() {
       this.$store.commit('updateKeyword', '')
     },
-    getSelectedCounty() {
+    changeSelectedCounty() {
       this.emptyKeyword()
       this.$store.commit('updateSelectedCounty', this.selectedCounty)
     },
-    getSelectedTown() {
+    gchangeSlectedTown() {
       this.emptyKeyword()
       this.$store.commit('updateSelectedTown', this.selectedTown)
     },

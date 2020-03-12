@@ -37,6 +37,9 @@ export const store = new Vuex.Store({
     },
     updateCurrentZoom(state, payload) {
       state.zoom = payload
+    },
+    updateMaskType(state, payload) {
+      state.maskType = payload
     }
   },
   actions: {},

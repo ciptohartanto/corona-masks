@@ -49,11 +49,11 @@
           h3.topBar-subtitle Mask Type
           .topBar-radioGroup
             .topBar-theradio
-              input.topBar-radio(name="maskTypes" type='radio' v-model='maskType' value="allMaskTypes" @change="setMaskTypes")
+              input.topBar-radio(name="maskTypes" type='radio' v-model='maskType' value="allMaskTypes" @change="changeMaskType")
               label.topbar-caption 成人與兒童用的
 
             .topBar-theradio
-              input.topBar-radio(name="maskTypes" type='radio' v-model='maskType' value="childrenMaskType" @change="setMaskTypes")
+              input.topBar-radio(name="maskTypes" type='radio' v-model='maskType' value="childrenMaskType" @change="changeMaskType")
               label.topbar-caption 兒童用的
 
 
@@ -76,7 +76,8 @@ export default {
         selectCounty: '城市',
         inputPlaceholder: '地址',
         message: '哈囉!'
-      }
+      },
+      maskType: this.$store.state.maskType
     }
   },
   computed: {
@@ -97,9 +98,6 @@ export default {
     },
     searchBy() {
       return this.$store.state.searchBy
-    },
-    maskType() {
-      return this.$store.state.maskType
     }
   },
 
@@ -118,8 +116,8 @@ export default {
       this.emptyKeyword()
       this.$store.commit('updateSelectedTown', this.selectedTown)
     },
-    setMaskTypes() {
-      this.$emit('gotMaskType', this.maskType)
+    changeMaskType() {
+      this.$store.commit('updateMaskType', this.maskType)
     },
     setIsPopup() {
       this.$store.commit('updateIsPopup', !this.isPopup)

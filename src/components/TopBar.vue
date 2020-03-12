@@ -77,7 +77,8 @@ export default {
         inputPlaceholder: '地址',
         message: '哈囉!'
       },
-      maskType: this.$store.state.maskType
+      maskType: this.$store.state.maskType,
+      searchBy: this.$store.state.searchBy
     }
   },
   computed: {
@@ -95,9 +96,6 @@ export default {
     },
     counties() {
       return this.$store.state.counties
-    },
-    searchBy() {
-      return this.$store.state.searchBy
     }
   },
 
@@ -118,6 +116,9 @@ export default {
     },
     changeMaskType() {
       this.$store.commit('updateMaskType', this.maskType)
+    },
+    changeSearchBy() {
+      this.$store.commit('updateSearchBy', this.searchBy)
     },
     setIsPopup() {
       this.$store.commit('updateIsPopup', !this.isPopup)

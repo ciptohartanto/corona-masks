@@ -40,6 +40,9 @@ export const store = new Vuex.Store({
     },
     updateMaskType(state, payload) {
       state.maskType = payload
+    },
+    updateSearchBy(state, payload) {
+      state.searchBy = payload
     }
   },
   actions: {},

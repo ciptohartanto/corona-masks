@@ -1,39 +1,39 @@
 <template lang="pug">
-#mapid
-	l-map(
-		@update:center="updateCenter"
-		@update:zoom='updateZoom'
-		:zoom="zoom"
-		:center="center"
-		style="width: 100%; height: 100vh;"
-		)
-		l-tile-layer(:url="url" :attribution='attribution')
-		v-marker-cluster(:options='clusterOptions')
-			l-marker(
-				v-for="(location, index) in locations"
-				:key="index"
-				:lat-lng="getLatLong(location.geometry.coordinates[1], location.geometry.coordinates[0])"
-				@click=" getMarkerIndex(index)"
-				)
-				l-popup
-					address.popup-address
-						span.popup-addressTitle {{location.properties.name}}
-						.popup-stackUp
-							span.popup-addressSubtitle {{location.properties.address}}
-							span.popup-addressSubtitle {{location.properties.phone}}
-						.popup-mainInfo
-							.popup-wrapp
-								span.popup-addressIcon
-									include ./../assets/medical-mask.svg
-								span.popup-addressCaption 成人: {{location.properties.mask_adult}}
-							.popup-wrapp
-								span.popup-addressIcon
-									include ./../assets/mask.svg
-								span.popup-addressCaption 兒童: {{location.properties.mask_child}}
-				l-icon(
-					:icon-url='icon'
-					:icon-size="iconSize"
-					)
+  #mapid
+    l-map(
+      @update:center="updateCenter"
+      @update:zoom='updateZoom'
+      :zoom="zoom"
+      :center="center"
+      style="width: 100%; height: 100vh;"
+      )
+      l-tile-layer(:url="url" :attribution='attribution')
+      v-marker-cluster(:options='clusterOptions')
+        l-marker(
+          v-for="(location, index) in locations"
+          :key="index"
+          :lat-lng="getLatLong(location.geometry.coordinates[1], location.geometry.coordinates[0])"
+          @click=" getMarkerIndex(index)"
+          )
+          l-popup
+            address.popup-address
+              span.popup-addressTitle {{location.properties.name}}
+              .popup-stackUp
+                span.popup-addressSubtitle {{location.properties.address}}
+                span.popup-addressSubtitle {{location.properties.phone}}
+              .popup-mainInfo
+                .popup-wrapp
+                  span.popup-addressIcon
+                    include ./../assets/medical-mask.svg
+                  span.popup-addressCaption 成人: {{location.properties.mask_adult}}
+                .popup-wrapp
+                  span.popup-addressIcon
+                    include ./../assets/mask.svg
+                  span.popup-addressCaption 兒童: {{location.properties.mask_child}}
+          l-icon(
+            :icon-url='icon'
+            :icon-size="iconSize"
+          )
 </template>
 
 <script>
@@ -51,33 +51,33 @@ export default {
     LIcon,
     L,
     'v-marker-cluster': Vue2LeafletMarkerCluster,
-    LPopup,
+    LPopup
   },
   props: {
     locations: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     zoom: {
       type: Number,
-      default: () => 0,
+      default: () => 0
     },
     center: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     isUser: {
       type: Boolean,
-      default: () => false,
+      default: () => false
     },
     userLat: {
       type: Number,
-      default: () => null,
+      default: () => null
     },
     userLong: {
       type: Number,
-      default: () => null,
-    },
+      default: () => null
+    }
   },
   data() {
     return {
@@ -90,8 +90,8 @@ export default {
       iconSize: [35, 35],
       iconBig: [100, 100],
       clusterOptions: {
-        disableClusteringAtZoom: 17,
-      },
+        disableClusteringAtZoom: 17
+      }
     }
   },
   methods: {
@@ -109,8 +109,8 @@ export default {
     },
     updateCenter(center) {
       this.$emit('updateNewCenter', center)
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -118,48 +118,48 @@ export default {
 @import "~leaflet.markercluster/dist/MarkerCluster.css";
 @import "~leaflet.markercluster/dist/MarkerCluster.Default.css";
 .icon--big
-	width: 75px
-	height: 75px
+  width: 75px
+  height: 75px
 
 
 .popup
-	&-address
-		font-style: normal
-	&-addressTitle
-		font-size: 22px
-		margin-bottom: 18px
-		font-weight: bold
-		display: block
-	&-addressSubtitle
-		font-size: 18px
-		display: block
-	&-addressIcon
-		display: flex
-		width: 24px
-		height: 24px
-		align-items: center
-		justify-content: center
-		margin-right: 8px
-	&-addressCaption
-		font-size: 16px
-		font-weight: bold
-	&-wrapp
-		display: flex
-		width: 45%
-	&-mainInfo
-		margin-top: 20px
-		display: flex
-		justify-content: space-between
+  &-address
+    font-style: normal
+  &-addressTitle
+    font-size: 22px
+    margin-bottom: 18px
+    font-weight: bold
+    display: block
+  &-addressSubtitle
+    font-size: 18px
+    display: block
+  &-addressIcon
+    display: flex
+    width: 24px
+    height: 24px
+    align-items: center
+    justify-content: center
+    margin-right: 8px
+  &-addressCaption
+    font-size: 16px
+    font-weight: bold
+  &-wrapp
+    display: flex
+    width: 45%
+  &-mainInfo
+    margin-top: 20px
+    display: flex
+    justify-content: space-between
 
 
 // resetting UI
 .leaflet-popup-content-wrapper
-	border-radius: 0 !important
+  border-radius: 0 !important
 .leaflet-popup
-	bottom: 10px !important
+  bottom: 10px !important
 .leaflet-popup-content
-	margin: 24px !important
-	@media screen and (max-width: 450px)
-		width: 320px !important
-		max-width: 80% !important
+  margin: 24px !important
+  @media screen and (max-width: 450px)
+    width: 320px !important
+    max-width: 80% !important
 </style>

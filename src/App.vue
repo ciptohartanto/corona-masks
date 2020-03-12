@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
   #app
     leaflet-map(
       :locations="newArr"
@@ -29,7 +29,7 @@ export default {
   name: 'App',
   components: {
     LeafletMap,
-    TopBar,
+    TopBar
   },
   data() {
     return {
@@ -38,13 +38,13 @@ export default {
       newArr: [],
       current: {
         center: L.latLng(25.054968, 121.537027),
-        zoom: 15,
+        zoom: 15
       },
       countyList: [],
       townList: [],
       selectedCounty: '臺北市',
       selectedTown: '內湖區',
-      maskType: 'allMaskTypes',
+      maskType: 'allMaskTypes'
     }
   },
   created() {
@@ -161,12 +161,12 @@ export default {
         return location.properties.mask_child > 2
       })
       this.newArr = newArrMaskType
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style lang='sass'>
+<style lang="sass">
 
 #app
   font-family: Avenir, Helvetica, Arial, sans-serif
@@ -190,6 +190,4 @@ input
   border: none
 #mapid
   height: 100%
-
-
 </style>

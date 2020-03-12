@@ -62,27 +62,27 @@ export default {
   props: {
     locations: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     message: {
       type: String,
-      default: () => '',
+      default: () => ''
     },
     countyData: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     townData: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   data() {
     return {
       keyword: '',
       current: {
         long: null,
-        lat: null,
+        lat: null
       },
       selectedCounty: '臺北市',
       selectedTown: '內湖區',
@@ -90,11 +90,11 @@ export default {
         selectTown: '地區',
         selectCounty: '城市',
         inputPlaceholder: '地址',
-        message: '哈囉!',
+        message: '哈囉!'
       },
       searchBy: 'selectionAddress',
       maskType: 'allMaskTypes',
-      isPopupContext: true,
+      isPopupContext: true
     }
   },
   computed: {
@@ -106,10 +106,10 @@ export default {
         '星期三',
         '星期四',
         '星期五',
-        '星期六',
+        '星期六'
       ]
       return dates[new Date().getDay()]
-    },
+    }
   },
 
   methods: {
@@ -131,8 +131,8 @@ export default {
     },
     setIsPopupContext() {
       this.isPopupContext = !this.isPopupContext
-    },
-  },
+    }
+  }
 }
 </script>
 

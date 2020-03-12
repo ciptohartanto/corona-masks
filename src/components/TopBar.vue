@@ -112,7 +112,7 @@ export default {
       this.emptyKeyword()
       this.$store.commit('updateSelectedCounty', this.selectedCounty)
     },
-    gchangeSlectedTown() {
+    changeSelectedTown() {
       this.emptyKeyword()
       this.$store.commit('updateSelectedTown', this.selectedTown)
     },

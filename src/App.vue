@@ -2,17 +2,14 @@
   #app
     leaflet-map(
       :locations="newArr"
-      :center="current.center"
-      :zoom="current.zoom"
+      :center="center"
+      :zoom="zoom"
       @markerIndex="setMarkerIndex"
       @updateNewZoom="setNewZoom"
     )
     top-bar(
       :locations="newArr"
       @gotKeyword="goToNewArea"
-      :countyData='countyList'
-      :townData='townList'
-      :selectedCounty="selectedCounty"
       @gotSelectedCounty="setSelectedCounty"
       @gotSelectedTown="setSelectedTown"
       @gotMaskType='setMaskType'
@@ -32,14 +29,7 @@ export default {
     TopBar
   },
   mixins: [locationsMixin],
-  data() {
-    return {
-      current: {
-        center: L.latLng(25.054968, 121.537027),
-        zoom: 15
-      }
-    }
-  },
+
   created() {
     this.getAPI()
     this.getTheVeryLocation()
@@ -55,6 +45,12 @@ export default {
     },
     newArr() {
       return this.$store.state.newArr
+    },
+    center() {
+      return this.$store.state.center
+    },
+    zoom() {
+      return this.$store.state.zoom
     }
   },
   methods: {
@@ -67,9 +63,9 @@ export default {
       }
     },
     goToNewCenter() {
-      const firstLat = this.newArr[0].geometry.coordinates[1]
-      const firstLong = this.newArr[0].geometry.coordinates[0]
-      this.current.center = L.latLng(firstLat, firstLong)
+      // const firstLat = this.newArr[0].geometry.coordinates[1]
+      // const firstLong = this.newArr[0].geometry.coordinates[0]
+      // this.current.center = L.latLng(firstLat, firstLong)
     },
     getTheVeryLocation() {
       const { locations } = this
@@ -84,8 +80,8 @@ export default {
     },
     goToNewArea(keyword) {
       this.keyword = keyword
-      this.newAreaFromKeyword()
-      this.goToNewCenter()
+      // this.newAreaFromKeyword()
+      // this.goToNewCenter()
     },
     setMarkerIndex(index) {
       const lat = this.newArr[index].geometry.coordinates[1]
@@ -94,7 +90,7 @@ export default {
       // this.current.zoom = 17; // problematic
     },
     setNewZoom(zoom) {
-      this.current.zoom = zoom
+      this.$store.commit('updateCurrentZoom', zoom)
     },
     setNewCenter(center) {
       this.current.center = center

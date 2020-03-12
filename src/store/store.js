@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import L from 'leaflet'
 
 Vue.use(Vuex)
 
@@ -7,14 +8,16 @@ export const store = new Vuex.Store({
   state: {
     locations: [],
     newArr: [],
-    keyword: '',
-    isPopup: true,
     towns: [],
     counties: [],
+    center: L.latLng(25.054968, 121.537027),
+    zoom: 15,
+    keyword: '',
     selectedCounty: '臺北市',
     selectedTown: '內湖區',
     searchBy: 'selectionAddress',
-    maskType: 'allMaskTypes'
+    maskType: 'allMaskTypes',
+    isPopup: true
   },
   mutations: {
     initLocationsArray(state, payload) {
@@ -31,6 +34,9 @@ export const store = new Vuex.Store({
     },
     updateSelectedTown(state, payload) {
       state.selectedTown = payload
+    },
+    updateCurrentZoom(state, payload) {
+      state.zoom = payload
     }
   },
   actions: {},
@@ -76,6 +82,11 @@ export const store = new Vuex.Store({
         )
       })
       return (state.newArr = newArr)
+    },
+    center(state) {
+      const firstLat = state.newArr[0].geometry.coordinates[1]
+      const firstLong = state.newArr[0].geometry.coordinates[0]
+      state.center = L.latLng(firstLat, firstLong)
     }
   }
 })

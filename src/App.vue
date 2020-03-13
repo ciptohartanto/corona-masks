@@ -20,30 +20,43 @@ export default {
     this.getAPI()
     document.title = 'Mask Locator - Combat Coronavirus, Taiwan!'
   },
-
+  computed: {
+    collectTowns() {
+      return this.$store.getters.towns
+    },
+    collectCounties() {
+      return this.$store.getters.counties
+    },
+    updateNewArr() {
+      return this.$store.getters.update
+    }
+  },
   methods: {
     async getAPI() {
       try {
         const res = await this.getLocations()
-        this.$store.commit('initLocationsArray', res.data.features)
+        this.$store.commit('initLocationsArray', res)
+        this.collectTowns
+        this.collectCounties
+        this.updateNewArr
       } catch (err) {
         console.log(err)
       }
-    },
-    setMaskType(val) {
-      this.maskType = val
-      const { newArr } = this
-      const newArrMaskType = newArr.filter(location => {
-        if (this.maskType === 'allMaskTypes') {
-          return (
-            location.properties.mask_adult > 2 &&
-            location.properties.mask_child > 2
-          )
-        }
-        return location.properties.mask_child > 2
-      })
-      this.newArr = newArrMaskType
     }
+    // setMaskType(val) {
+    //   this.maskType = val
+    //   const { newArr } = this
+    //   const newArrMaskType = newArr.filter(location => {
+    //     if (this.maskType === 'allMaskTypes') {
+    //       return (
+    //         location.properties.mask_adult > 2 &&
+    //         location.properties.mask_child > 2
+    //       )
+    //     }
+    //     return location.properties.mask_child > 2
+    //   })
+    //   this.newArr = newArrMaskType
+    // }
   }
 }
 </script>

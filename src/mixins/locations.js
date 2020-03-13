@@ -5,7 +5,7 @@ const api =
 export const locationsMixin = {
   methods: {
     getLocations() {
-      return axios.get(api)
+      return axios.get(api).then(res => res.data.features)
     }
   }
 }

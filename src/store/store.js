@@ -60,6 +60,15 @@ export const store = new Vuex.Store({
     },
     setNewZoom(context, payload) {
       context.commit('updateCurrentZoom', payload)
+    },
+    setMaskType(context, payload) {
+      context.commit('updateMaskType', payload)
+    },
+    setSearchBy(context, payload) {
+      context.commit('updateSearchBy', payload)
+    },
+    setIsPopup(context, payload) {
+      context.commit('updateIsPopup', payload)
     }
   },
   getters: {

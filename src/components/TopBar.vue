@@ -101,37 +101,43 @@ export default {
 
   methods: {
     getKeyword() {
+      // this.defaultZoom()
       this.$store.dispatch('setNewKeyword', this.keyword)
-      this.$store.dispatch('setNewZoom', 14)
       this.$store.getters.update
       this.$store.getters.center
     },
     emptyKeyword() {
       this.$store.dispatch('setNewKeyword', '')
     },
+    emptyTown() {
+      this.$store.dispatch('setNewSelectedTown', '')
+    },
+    defaultZoom() {
+      this.$store.dispatch('setNewZoom', 14)
+    },
     changeSelectedCounty() {
       this.emptyKeyword()
+      this.emptyTown()
       this.$store.dispatch('setNewSelectedCounty', this.selectedCounty)
-      this.$store.dispatch('setNewSelectedTown', '')
       this.$store.getters.towns
       this.$store.getters.update
       this.$store.getters.center
     },
     changeSelectedTown() {
       this.emptyKeyword()
+      // this.defaultZoom()
       this.$store.dispatch('setNewSelectedTown', this.selectedTown)
-      this.$store.dispatch('setNewZoom', 14)
       this.$store.getters.update
       this.$store.getters.center
     },
     changeMaskType() {
-      this.$store.commit('updateMaskType', this.maskType)
+      this.$store.dispatch('setMaskType', this.maskType)
     },
     changeSearchBy() {
-      this.$store.commit('updateSearchBy', this.searchBy)
+      this.$store.dispatch('setSearchBy', this.searchBy)
     },
     setIsPopup() {
-      this.$store.commit('updateIsPopup', !this.isPopup)
+      this.$store.dispatch('setIsPopup', !this.isPopup)
     }
   }
 }

@@ -101,18 +101,28 @@ export default {
 
   methods: {
     getKeyword() {
-      this.$store.commit('updateKeyword', this.keyword)
+      this.$store.dispatch('setNewKeyword', this.keyword)
+      this.$store.dispatch('setNewZoom', 14)
+      this.$store.getters.update
+      this.$store.getters.center
     },
     emptyKeyword() {
-      this.$store.commit('updateKeyword', '')
+      this.$store.dispatch('setNewKeyword', '')
     },
     changeSelectedCounty() {
       this.emptyKeyword()
-      this.$store.commit('updateSelectedCounty', this.selectedCounty)
+      this.$store.dispatch('setNewSelectedCounty', this.selectedCounty)
+      this.$store.dispatch('setNewSelectedTown', '')
+      this.$store.getters.towns
+      this.$store.getters.update
+      this.$store.getters.center
     },
     changeSelectedTown() {
       this.emptyKeyword()
-      this.$store.commit('updateSelectedTown', this.selectedTown)
+      this.$store.dispatch('setNewSelectedTown', this.selectedTown)
+      this.$store.dispatch('setNewZoom', 14)
+      this.$store.getters.update
+      this.$store.getters.center
     },
     changeMaskType() {
       this.$store.commit('updateMaskType', this.maskType)

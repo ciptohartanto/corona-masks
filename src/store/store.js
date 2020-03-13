@@ -48,6 +48,18 @@ export const store = new Vuex.Store({
   actions: {
     setInitLocationsArray(context, payload) {
       context.commit('initLocationsArray', payload)
+    },
+    setNewSelectedCounty(context, payload) {
+      context.commit('updateSelectedCounty', payload)
+    },
+    setNewSelectedTown(context, payload) {
+      context.commit('updateSelectedTown', payload)
+    },
+    setNewKeyword(context, payload) {
+      context.commit('updateKeyword', payload)
+    },
+    setNewZoom(context, payload) {
+      context.commit('updateCurrentZoom', payload)
     }
   },
   getters: {

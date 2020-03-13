@@ -93,6 +93,7 @@ export const store = new Vuex.Store({
       const storeKeyword = state.keyword
       const storeSelectedTown = state.selectedTown
       const storeSeectedCounty = state.selectedCounty
+      const storeMaskType = state.maskType
 
       const replaceTai = storeSeectedCounty.replace('臺', '台')
 
@@ -100,17 +101,32 @@ export const store = new Vuex.Store({
 
       const newArr = storeLocations.filter(loc => {
         if (storeKeyword !== '') {
-          return (
-            loc.properties.address.includes(storeKeyword) &&
-            loc.properties.mask_adult > 2 &&
-            loc.properties.mask_child > 2
-          )
+          if (storeMaskType !== 'allMaskTypes') {
+            return (
+              loc.properties.address.includes(storeKeyword) &&
+              loc.properties.mask_child > 100
+            )
+          } else {
+            return (
+              loc.properties.address.includes(storeKeyword) &&
+              loc.properties.mask_child > 2 &&
+              loc.properties.mask_adult > 2
+            )
+          }
+        } else if (combinedKeywords !== '') {
+          if (storeMaskType !== 'allMaskTypes') {
+            return (
+              loc.properties.address.includes(combinedKeywords) &&
+              loc.properties.mask_child > 100
+            )
+          } else {
+            return (
+              loc.properties.address.includes(combinedKeywords) &&
+              loc.properties.mask_child > 2 &&
+              loc.properties.mask_adult > 2
+            )
+          }
         }
-        return (
-          loc.properties.address.includes(combinedKeywords) &&
-          loc.properties.mask_adult > 2 &&
-          loc.properties.mask_child > 2
-        )
       })
       return (state.newArr = newArr)
     },

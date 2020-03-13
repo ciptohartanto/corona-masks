@@ -132,6 +132,7 @@ export default {
     },
     changeMaskType() {
       this.$store.dispatch('setMaskType', this.maskType)
+      this.$store.getters.update
     },
     changeSearchBy() {
       this.$store.dispatch('setSearchBy', this.searchBy)

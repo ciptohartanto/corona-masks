@@ -43,20 +43,6 @@ export default {
         console.log(err)
       }
     }
-    // setMaskType(val) {
-    //   this.maskType = val
-    //   const { newArr } = this
-    //   const newArrMaskType = newArr.filter(location => {
-    //     if (this.maskType === 'allMaskTypes') {
-    //       return (
-    //         location.properties.mask_adult > 2 &&
-    //         location.properties.mask_child > 2
-    //       )
-    //     }
-    //     return location.properties.mask_child > 2
-    //   })
-    //   this.newArr = newArrMaskType
-    // }
   }
 }
 </script>

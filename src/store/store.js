@@ -17,7 +17,8 @@ export const store = new Vuex.Store({
     selectedTown: '',
     searchBy: 'selectionAddress',
     maskType: 'allMaskTypes',
-    isPopup: true
+    isPopup: true,
+    isWarningText: false
   },
   mutations: {
     initLocationsArray(state, payload) {
@@ -100,7 +101,10 @@ export const store = new Vuex.Store({
       const combinedKeywords = replaceTai + storeSelectedTown
 
       const newArr = storeLocations.filter(loc => {
-        if (storeKeyword !== '') {
+        if (
+          storeKeyword !== '' &&
+          loc.properties.address.includes(storeKeyword)
+        ) {
           if (storeMaskType !== 'allMaskTypes') {
             return (
               loc.properties.address.includes(storeKeyword) &&
@@ -113,7 +117,10 @@ export const store = new Vuex.Store({
               loc.properties.mask_adult > 2
             )
           }
-        } else if (combinedKeywords !== '') {
+        } else if (
+          combinedKeywords !== '' &&
+          loc.properties.address.includes(combinedKeywords)
+        ) {
           if (storeMaskType !== 'allMaskTypes') {
             return (
               loc.properties.address.includes(combinedKeywords) &&
@@ -126,6 +133,12 @@ export const store = new Vuex.Store({
               loc.properties.mask_adult > 2
             )
           }
+        } else if (
+          loc.properties.address.indexOf(storeKeyword) === -1 ||
+          loc.properties.address.indexOf(combinedKeywords) === -1
+        ) {
+          state.isPopup = true
+          state.isWarningText = true
         }
       })
       return (state.newArr = newArr)

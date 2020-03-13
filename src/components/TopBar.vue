@@ -32,7 +32,9 @@
               input.topBar-radio(
                 name="searchBy" type='radio' v-model='searchBy' value="manualAddress")
               label.topbar-caption 填寫地址
-
+          
+          .topBar-warningText(v-if="isWarningText=== true")
+            h4 Sorry bruh, no results!
           .topBar-inputGroup(v-if="searchBy === 'manualAddress'")
             input.topBar-input(type="text" :placeholder="translate.inputPlaceholder" v-model="keyword")
             button.topBar-button(@click="getKeyword") 搜尋
@@ -96,6 +98,9 @@ export default {
     },
     counties() {
       return this.$store.state.counties
+    },
+    isWarningText() {
+      return this.$store.state.isWarningText
     }
   },
 

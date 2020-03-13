@@ -35,13 +35,13 @@
 
           .topBar-inputGroup(v-if="searchBy === 'manualAddress'")
             input.topBar-input(type="text" :placeholder="translate.inputPlaceholder" v-model="keyword")
-            button.topBar-button(@click="getKeyword(); setIsPopup()") 搜尋
+            button.topBar-button(@click="getKeyword") 搜尋
 
           .topBar-selectGroup(v-if="searchBy === 'selectionAddress'")
             select.topBar-select(v-model="selectedCounty" @change="changeSelectedCounty")
               option(default selected disabled value='') {{translate.selectCounty}}
               option(v-for="(data, index) in counties" :value="data" :key="index") {{data}}
-            select.topBar-select(v-model="selectedTown" @change="changeSelectedTown(); setIsPopup()")
+            select.topBar-select(v-model="selectedTown" @change="changeSelectedTown")
               option(default selected disabled value='') {{translate.selectTown}}
               option(v-for="(data, index) in towns" :value="data" :key="index") {{data}}
 
@@ -102,6 +102,7 @@ export default {
   methods: {
     getKeyword() {
       // this.defaultZoom()
+      this.setIsPopup()
       this.$store.dispatch('setNewKeyword', this.keyword)
       this.$store.getters.update
       this.$store.getters.center
@@ -125,6 +126,7 @@ export default {
     },
     changeSelectedTown() {
       this.emptyKeyword()
+      this.setIsPopup()
       // this.defaultZoom()
       this.$store.dispatch('setNewSelectedTown', this.selectedTown)
       this.$store.getters.update

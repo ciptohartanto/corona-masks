@@ -44,6 +44,10 @@ export const store = new Vuex.Store({
     },
     updateSearchBy(state, payload) {
       state.searchBy = payload
+    },
+    updatePopupAtNoLocations(state, payload) {
+      state.isPopup = payload
+      state.isWarningText = payload
     }
   },
   actions: {
@@ -70,6 +74,9 @@ export const store = new Vuex.Store({
     },
     setIsPopup(context, payload) {
       context.commit('updateIsPopup', payload)
+    },
+    setPopupAtNoLocations(context, payload) {
+      context.commit('updatePopupAtNoLocations', payload)
     }
   },
   getters: {
@@ -83,9 +90,7 @@ export const store = new Vuex.Store({
       return (state.towns = listOfTowns.filter(x => x))
     },
     counties(state) {
-      const mappedLocations = store.state.locations.map(
-        loc => loc.properties.county
-      )
+      const mappedLocations = store.state.locations.map(loc => loc.properties.county)
       const countyList = [...new Set(mappedLocations)]
       return (state.counties = countyList.filter(x => x))
     },
@@ -101,47 +106,33 @@ export const store = new Vuex.Store({
       const combinedKeywords = replaceTai + storeSelectedTown
 
       const newArr = storeLocations.filter(loc => {
-        if (
-          storeKeyword !== '' &&
-          loc.properties.address.includes(storeKeyword)
-        ) {
-          if (storeMaskType !== 'allMaskTypes') {
-            return (
-              loc.properties.address.includes(storeKeyword) &&
-              loc.properties.mask_child > 100
-            )
+        if (storeKeyword !== '') {
+          if (storeMaskType === 'allMaskTypes') {
+            return loc.properties.address.includes(storeKeyword) && loc.properties.mask_adult > 10 && loc.properties.mask_child > 10
           } else {
-            return (
-              loc.properties.address.includes(storeKeyword) &&
-              loc.properties.mask_child > 2 &&
-              loc.properties.mask_adult > 2
-            )
+            return loc.properties.address.includes(storeKeyword) && loc.properties.mask_child > 4000
           }
-        } else if (
-          combinedKeywords !== '' &&
-          loc.properties.address.includes(combinedKeywords)
-        ) {
-          if (storeMaskType !== 'allMaskTypes') {
-            return (
-              loc.properties.address.includes(combinedKeywords) &&
-              loc.properties.mask_child > 100
-            )
+        } else if (combinedKeywords !== '') {
+          if (storeMaskType === 'allMaskTypes') {
+            return loc.properties.address.includes(combinedKeywords) && loc.properties.mask_adult > 10 && loc.properties.mask_child > 10
           } else {
-            return (
-              loc.properties.address.includes(combinedKeywords) &&
-              loc.properties.mask_child > 2 &&
-              loc.properties.mask_adult > 2
-            )
+            return loc.properties.address.includes(combinedKeywords) && loc.properties.mask_child > 5000
           }
-        } else if (
-          loc.properties.address.indexOf(storeKeyword) === -1 ||
-          loc.properties.address.indexOf(combinedKeywords) === -1
-        ) {
-          state.isPopup = true
-          state.isWarningText = true
         }
       })
+      // console.log(newArr)
       return (state.newArr = newArr)
+
+      // if (newArr.length === 0) {
+      //   state.isPopup = true
+      //   state.isWarningText = true
+      //   return
+      // } else {
+      //   console.log(newArr)
+      //   state.isPopup = true
+      //   state.isWarningText = false
+      //   return (state.newArr = newArr)
+      // }
     },
     center(state) {
       const firstLat = state.newArr[0].geometry.coordinates[1]

@@ -85,7 +85,7 @@ export default {
   },
   computed: {
     newArr() {
-      return this.$store.state.newArr
+      return this.$store.getters.update
     },
     todayDate() {
       return this.dayOfToday
@@ -107,9 +107,15 @@ export default {
   methods: {
     getKeyword() {
       // this.defaultZoom()
-      this.setIsPopup()
+      // this.setIsPopup()
       this.$store.dispatch('setNewKeyword', this.keyword)
       this.$store.getters.update
+
+      // if (this.$store.state.isWarningText === true) {
+      //   this.setIsPopup
+      // }
+
+      // this.newArr
       this.$store.getters.center
     },
     emptyKeyword() {
@@ -127,14 +133,30 @@ export default {
       this.$store.dispatch('setNewSelectedCounty', this.selectedCounty)
       this.$store.getters.towns
       this.$store.getters.update
+      this.isPopupFalse
+
+      // if (this.newArr === 0) {
+      //   this.$store.commit('updatePopupAtNoLocations')
+      // }
+      // this.$store.getters.judgeMe
+      // this.newArr
+
       this.$store.getters.center
     },
     changeSelectedTown() {
       this.emptyKeyword()
-      this.setIsPopup()
+      // this.setIsPopup()
       // this.defaultZoom()
       this.$store.dispatch('setNewSelectedTown', this.selectedTown)
       this.$store.getters.update
+      this.isPopupFalse
+
+      // if (this.newArr === 0) {
+      //   this.$store.commit('updatePopupAtNoLocations')
+      // }
+
+      // this.newArr
+
       this.$store.getters.center
     },
     changeMaskType() {
@@ -144,8 +166,8 @@ export default {
     changeSearchBy() {
       this.$store.dispatch('setSearchBy', this.searchBy)
     },
-    setIsPopup() {
-      this.$store.dispatch('setIsPopup', !this.isPopup)
+    isPopupFalse() {
+      this.$store.dispatch('setIsPopup', false)
     }
   }
 }

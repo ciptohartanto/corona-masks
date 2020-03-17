@@ -45,8 +45,7 @@ export const store = new Vuex.Store({
     updateSearchBy(state, payload) {
       state.searchBy = payload
     },
-    updatePopupAtNoLocations(state, payload) {
-      state.isPopup = payload
+    updateIsWarningText(state, payload) {
       state.isWarningText = payload
     }
   },
@@ -75,8 +74,8 @@ export const store = new Vuex.Store({
     setIsPopup(context, payload) {
       context.commit('updateIsPopup', payload)
     },
-    setPopupAtNoLocations(context, payload) {
-      context.commit('updatePopupAtNoLocations', payload)
+    setIsWarningText(context, payload) {
+      context.commit('updateIsWarningText', payload)
     }
   },
   getters: {
@@ -120,19 +119,7 @@ export const store = new Vuex.Store({
           }
         }
       })
-      // console.log(newArr)
       return (state.newArr = newArr)
-
-      // if (newArr.length === 0) {
-      //   state.isPopup = true
-      //   state.isWarningText = true
-      //   return
-      // } else {
-      //   console.log(newArr)
-      //   state.isPopup = true
-      //   state.isWarningText = false
-      //   return (state.newArr = newArr)
-      // }
     },
     center(state) {
       const firstLat = state.newArr[0].geometry.coordinates[1]

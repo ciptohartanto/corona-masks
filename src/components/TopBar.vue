@@ -3,10 +3,10 @@
     :class="`${isPopup === true ? '' : 'topBar--isClosed'}`"
     )
     .topBar-intro(v-if="isPopup !== true")
-      button.topBar-button2(@click="setIsPopup") Show Settings Panel
+      button.topBar-button2(@click="showMainPopup") Show Settings Panel
       
     .topBar-context(v-else)
-      .topBar-close(@click="setIsPopup")
+      .topBar-close(@click="hideMainPopup")
         include ./../assets/close.svg
       .topBar-top
         h1.topBar-title
@@ -106,19 +106,12 @@ export default {
 
   methods: {
     getKeyword() {
-      // this.defaultZoom()
-      // this.setIsPopup()
       this.$store.dispatch('setNewKeyword', this.keyword)
       this.$store.getters.update
-
-      // if (this.$store.state.isWarningText === true) {
-      //   this.setIsPopup
-      // }
-
-      // this.newArr
+      this.checkNoZeroLocations()
       this.$store.getters.center
     },
-    emptyKeyword() {
+    clearKeyword() {
       this.$store.dispatch('setNewKeyword', '')
     },
     emptyTown() {
@@ -128,46 +121,46 @@ export default {
       this.$store.dispatch('setNewZoom', 14)
     },
     changeSelectedCounty() {
-      this.emptyKeyword()
+      this.clearKeyword()
       this.emptyTown()
       this.$store.dispatch('setNewSelectedCounty', this.selectedCounty)
       this.$store.getters.towns
       this.$store.getters.update
-      this.isPopupFalse
-
-      // if (this.newArr === 0) {
-      //   this.$store.commit('updatePopupAtNoLocations')
-      // }
-      // this.$store.getters.judgeMe
-      // this.newArr
-
+      this.checkNoZeroLocations()
       this.$store.getters.center
     },
     changeSelectedTown() {
-      this.emptyKeyword()
-      // this.setIsPopup()
-      // this.defaultZoom()
+      this.clearKeyword()
       this.$store.dispatch('setNewSelectedTown', this.selectedTown)
       this.$store.getters.update
-      this.isPopupFalse
-
-      // if (this.newArr === 0) {
-      //   this.$store.commit('updatePopupAtNoLocations')
-      // }
-
-      // this.newArr
-
+      this.checkNoZeroLocations()
       this.$store.getters.center
     },
     changeMaskType() {
       this.$store.dispatch('setMaskType', this.maskType)
       this.$store.getters.update
+      this.checkNoZeroLocations()
     },
     changeSearchBy() {
       this.$store.dispatch('setSearchBy', this.searchBy)
     },
-    isPopupFalse() {
-      this.$store.dispatch('setIsPopup', false)
+    setIsPopup(val) {
+      this.$store.dispatch('setIsPopup', val)
+    },
+    checkNoZeroLocations() {
+      if (this.newArr.length === 0) {
+        this.setIsPopup(true)
+        this.$store.dispatch('setIsWarningText', true)
+      } else {
+        this.setIsPopup(false)
+        this.$store.dispatch('setIsWarningText', false)
+      }
+    },
+    hideMainPopup() {
+      this.setIsPopup(false)
+    },
+    showMainPopup() {
+      this.setIsPopup(true)
     }
   }
 }

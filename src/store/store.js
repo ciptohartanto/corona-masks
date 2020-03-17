@@ -109,13 +109,13 @@ export const store = new Vuex.Store({
           if (storeMaskType === 'allMaskTypes') {
             return loc.properties.address.includes(storeKeyword) && loc.properties.mask_adult > 10 && loc.properties.mask_child > 10
           } else {
-            return loc.properties.address.includes(storeKeyword) && loc.properties.mask_child > 4000
+            return loc.properties.address.includes(storeKeyword) && loc.properties.mask_child > 200
           }
         } else if (combinedKeywords !== '') {
           if (storeMaskType === 'allMaskTypes') {
             return loc.properties.address.includes(combinedKeywords) && loc.properties.mask_adult > 10 && loc.properties.mask_child > 10
           } else {
-            return loc.properties.address.includes(combinedKeywords) && loc.properties.mask_child > 5000
+            return loc.properties.address.includes(combinedKeywords) && loc.properties.mask_child > 200
           }
         }
       })

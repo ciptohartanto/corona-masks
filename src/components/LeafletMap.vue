@@ -35,7 +35,7 @@
                     include ./../assets/mask.svg
                   span.popup-addressCaption 兒童: {{location.properties.mask_child}}
           l-icon(
-            :icon-url='icon'
+            :icon-url='iconPerAmount(location)'
             :icon-size="iconSize"
           )
 </template>
@@ -45,7 +45,10 @@ import L from 'leaflet'
 import { Icon } from 'leaflet'
 import { LMap, LTileLayer, LMarker, LIcon, LPopup } from 'vue2-leaflet'
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
-import pin from '../assets/marker.png'
+import marker_adults from '../assets/marker-adults.png'
+import marker_children from '../assets/marker-children.png'
+import marker_low from '../assets/marker-low.png'
+
 delete Icon.Default.prototype._getIconUrl
 Icon.Default.mergeOptions({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -66,12 +69,15 @@ export default {
   },
   data() {
     return {
-      url:
-        'https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}@2x.png?key=9oeahMFWIODM5nvypMGz',
+      url: 'https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}@2x.png?key=9oeahMFWIODM5nvypMGz',
       attribution:
         '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
 
-      icon: pin,
+      icons: {
+        adults: marker_adults,
+        children: marker_children,
+        low: marker_low
+      },
       iconSize: [35, 35],
       iconBig: [100, 100],
       clusterOptions: {
@@ -96,6 +102,15 @@ export default {
     },
     updateZoom(zoom) {
       this.$store.commit('updateCurrentZoom', zoom)
+    },
+    iconPerAmount(location) {
+      if (location.properties.mask_adult > 200) {
+        return this.icons.adults
+      } else if (location.properties.mask_child > 200) {
+        return this.icons.children
+      } else {
+        return this.icons.low
+      }
     }
   }
 }

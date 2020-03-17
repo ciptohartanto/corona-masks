@@ -316,6 +316,8 @@ export default {
       bottom: 10px
       left: 20%
       right: 20%
+  &-warningText
+    color: red
 @keyframes hideShow
   0%
     opacity: 100%
